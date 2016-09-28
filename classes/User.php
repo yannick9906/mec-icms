@@ -8,7 +8,7 @@
 
     namespace ICMS;
 
-    const USORTING = [
+    $USORTING = [
         "ascName"  => " ORDER BY username ASC",
         "ascID"    => " ORDER BY uID ASC",
         "descName" => " ORDER BY username DESC",
@@ -16,7 +16,7 @@
         "" => ""
     ];
 
-    const UFILTERING = [
+    $UFILTERING = [
         "" => "",
         "all" => "",
         "Admin"  => " WHERE level = 5",
@@ -69,21 +69,6 @@
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM icms_user WHERE username = :uname", [":uname" => $uName]);
             return new User($res->uID, $res->username, $res->realname, $res->passhash, $res->email);
-        }
-        /**
-         * Compares a md5() hash with the given Hash from db
-         *
-         * @param $hash string md5-hash
-         * @return bool
-         */
-        public function comparePWHash($hash) {
-            if($hash == $this->uPassHash) {
-                echo $hash . "<br/>" . $this->uPassHash;
-                return true;
-            } else {
-                echo $hash . "<br/>" . $this->uPassHash;
-                return false;
-            }
         }
         /**
          * Makes this class as an array to use for tables etc.

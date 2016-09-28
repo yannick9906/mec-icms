@@ -20,6 +20,7 @@
     <body>
         <script type="text/javascript" src="../libs/jquery-2.2.1.min.js"></script>
         <script type="text/javascript" src="../libs/materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="../libs/md5.js"></script>
         <style>
             .bg {
                 background: url("../css/pattern.png") no-repeat center;
@@ -27,7 +28,7 @@
             }
         </style>
 
-    <div class="bg valign-wrapper" style="position: absolute; height: 100%; width: 100%;">
+    <div id="bg" class="bg valign-wrapper" style="position: absolute; height: 100%; width: 100%;">
         <div class="valign center" style="width: 100%;">
             <div class="card-panel row left-align" style="display: inline-block">
                 <span class="bolden indigo-text col s6">ICMS LOGIN</span><span class="right-align grey-text text-lighten-2 col s6">ICMS(MEC) v4.0a</span><br/><br/>
@@ -48,7 +49,7 @@
                         <i class="material-icons">send</i>
                     </button>
                 </div>
-                <div id="loading" style="display: none;" class="center">
+                <div id="loading" style="display: none;" class="center col s12">
                     <div class="preloader-wrapper big active">
                         <div class="spinner-layer spinner-blue-only">
                             <div class="circle-clipper left">
@@ -60,6 +61,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col s12 center" style="display: none;" id="success">
+                    <i class="material-icons large green-text">check</i>
                 </div>
             </div>
         </div>
@@ -86,39 +90,52 @@
                 usernameField.removeClass("valid");
                 usernameField.removeClass("invalid");
             }
+
+            document.querySelector("#password").addEventListener('keypress', function(e) {
+                var key = e.which || e.keyCode;
+                if(key === 13) {
+                    doLogin();
+                }
+            })
         });
 
         function doLogin() {
             username = usernameField.val();
             password = passwordField.val();
+            passhash = md5(password);
 
             $("#loginFields").fadeOut(500, function() {
                 $("#loading").fadeIn(500);
+                $.getJSON("../api/users/checkUsername.php?username="+username, null, function(json) {
+                    if(json["exists"] == 1) {
+                        $.getJSON("../api/users/tryLogin.php?username="+username+"&passhash="+passhash, null, function(json2) {
+                            if(json2["success"] == 1) {
+                                $("#loading").fadeOut(250, function() {
+                                    $("#success").fadeIn(250, function() {
+                                        $("#bg").fadeOut(250, function() {
+                                            window.location.href = "./dashboard.php";
+                                        });
+                                    })
+                                });
+                            } else {
+                                Materialize.toast("Kennwort falsch", 2000, "red");
+                                passwordField.removeClass("valid");
+                                passwordField.addClass("invalid");
+                                $("#loading").fadeOut(500, function() {
+                                    $("#loginFields").fadeIn(500);
+                                });
+                            }
+                        })
+                    } else {
+                        Materialize.toast("Benutzername falsch", 2000, "red");
+                        usernameField.removeClass("valid");
+                        usernameField.addClass("invalid");
+                        $("#loading").fadeOut(500, function() {
+                            $("#loginFields").fadeIn(500);
+                        });
+                    }
+                });
             });
-
-            $.getJSON("api/users/checkUsername.php?username="+username, null, function(json) {
-                if(json["exists"] == 1) {
-                    $.getJSON("api/users/tryLogin.php?username="+username+"&passhash="+passhash, null, function(json2) {
-                        if(json["success"] == 1) {
-
-                        } else {
-                            Materialize.toast("Kennwort falsch", 2000, "red");
-                            usernameField.removeClass("valid");
-                            usernameField.addClass("invalid");
-                            $("#loading").fadeOut(500, function() {
-                                $("#loginFields").fadeIn(500);
-                            });
-                        }
-                    })
-                } else {
-                    Materialize.toast("Benutzername falsch", 2000, "red");
-                    passwordField.removeClass("valid");
-                    passwordField.addClass("invalid");
-                    $("#loading").fadeOut(500, function() {
-                        $("#loginFields").fadeIn(500);
-                    });
-                }
-            })
         }
     </script>
 </html>
