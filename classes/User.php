@@ -8,24 +8,13 @@
 
     namespace ICMS;
 
-    $USORTING = [
+    /*const USORTING = [
         "ascName"  => " ORDER BY username ASC",
         "ascID"    => " ORDER BY uID ASC",
         "descName" => " ORDER BY username DESC",
         "descID"   => " ORDER BY uID DESC",
         "" => ""
-    ];
-
-    $UFILTERING = [
-        "" => "",
-        "all" => "",
-        "Admin"  => " WHERE level = 5",
-        "Lehrer" => " WHERE level = 4",
-        "Orga"   => " WHERE level = 3",
-        "AK"     => " WHERE level = 2",
-        "Partei" => " WHERE level = 1",
-        "User"   => " WHERE level = 0"
-    ];
+    ];*/
 
     class User {
         private $pdo, $uID, $uName, $uRealname, $uPassHash, $uEmail;
@@ -104,24 +93,34 @@
             $res = $pdo->query("SELECT * FROM icms_user WHERE username = :uname", [":uname" => $uName]);
             return isset($res->uID);
         }
+
         /**
          * Returns all entries matching the search and the page
          *
-         * @param int $page
-         * @param int $pagesize
+         * @param int    $page
+         * @param int    $pagesize
          * @param string $search
+         * @param string $sort
          *
          * @return array Normal dict array with data
          */
-        public static function getList($page = 1, $pagesize = 75, $search = "") {
+        public static function getList($page = 1, $pagesize = 75, $search = "", $sort = "") {
+            $USORTING = [
+                "nameAsc"  => "ORDER BY username ASC",
+                "idAsc"    => "ORDER BY uID ASC",
+                "nameDesc" => "ORDER BY username DESC",
+                "idDesc"   => "ORDER BY uID DESC",
+                "" => ""
+            ];
+
             $pdo = new PDO_MYSQL();
             $startElem = ($page-1) * $pagesize;
             $endElem = $pagesize;
-            $stmt = $pdo->queryPagedList("icms_user", $startElem, $endElem, ["username","realname"], $search);
+            $stmt = $pdo->queryPagedList("icms_user", $startElem, $endElem, ["username","realname"], $search, $USORTING[$sort]);
             $hits = self::getListMeta($page, $pagesize, $search);
             while($row = $stmt->fetchObject()) {
                 array_push($hits["users"], [
-                    "uID" => $row->iID,
+                    "uID" => $row->uID,
                     "username" => utf8_encode($row->username),
                     "realname" => utf8_encode($row->realname),
                     "email" => utf8_encode($row->email),
@@ -175,7 +174,7 @@
                 "size" => $size,
                 "maxPage" => $maxpage,
                 "page" => $page,
-                "items" => []
+                "users" => []
             ];
         }
         /**

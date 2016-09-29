@@ -47,7 +47,7 @@
             return $stmt;
         }
 
-        public function queryPagedList($tablename, $startElem, $endElem, $searchableFields, $search) {
+        public function queryPagedList($tablename, $startElem, $endElem, $searchableFields, $search, $sortSQL) {
             $db = $this->connect();
             if($search != "") {
                 $lastField = $searchableFields[sizeof($searchableFields)-1];
@@ -56,10 +56,10 @@
                     $bindString .= $field;
                     $bindString .= ($field === $lastField ? '' : '," ",');
                 }
-                $stmt = $db->prepare("SELECT * FROM " . $tablename . " WHERE lower(concat(" . $bindString . ")) LIKE lower(concat('%',:search,'%')) LIMIT :start,:end");
+                $stmt = $db->prepare("SELECT * FROM " . $tablename . " WHERE lower(concat(" . $bindString . ")) LIKE lower(concat('%',:search,'%')) " . $sortSQL ." LIMIT :start,:end");
                 $stmt->bindValue(":search", $search, PDO::PARAM_STR);
             } else {
-                $stmt = $db->prepare("SELECT * FROM " . $tablename . " LIMIT :start,:end");
+                $stmt = $db->prepare("SELECT * FROM " . $tablename . " " . $sortSQL . " LIMIT :start,:end");
             }
             $stmt->bindValue(":start", $startElem, PDO::PARAM_INT);
             $stmt->bindValue(":end", $endElem, PDO::PARAM_INT);

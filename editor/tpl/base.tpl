@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>MEC ICMS../ - {$args.title}</title>
+    <meta charset="utf-8" />
     <!--Import Google Icon Font-->
     <!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
     <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
@@ -16,7 +17,7 @@
     <link rel="manifest" href="../manifest.json" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="theme-color" content="#3F51B5" />
+    <meta name="theme-color" content="#4286f4" />
 </head>
 <body>
 <!--Import jQuery before materialize.js-->
@@ -42,24 +43,24 @@
                         <a href="#!"><span class="white-text name" style="text-shadow: 1px 1px 5px black;">{$args.realname}</span></a>
                         <a href="#!"><span class="white-text email" style="text-shadow: 1px 1px 5px black;">{$args.email}</span></a>
                     </div></li>
-                <li><a href="#!"><i class="material-icons">person</i>Account</a></li>
-                <li><a id="nav-dashboard" href="#!">Dashboard</a></li>
-                <li class="sub"><a id="nav-logout" href="login.php?err=3">Logout</a></li>
+                <li id="nav-account"><a href="#!"><i class="material-icons">person</i>Account</a></li>
+                <li id="nav-dashboard"><a href="dashboard.php">Dashboard</a></li>
+                <li class="sub" id="nav-logout"><a href="login.php?err=3">Logout</a></li>
                 <li><div class="divider"></div></li>
                 <li class="subheader"><a class="subheader bolden">Seiten</a></li>
-                <li class="sub"><a id="nav-article" href="#!">Artikel</a></li>
-                <li class="sub"><a id="nav-news" href="#!">News</a></li>
-                <li class="sub"><a id="nav-competition" href="#!">Wettkämpfe</a></li>
-                <li class="sub"><a id="nav-event" href="#!">Termine</a></li>
+                <li class="sub" id="nav-article"><a href="#!">Artikel</a></li>
+                <li class="sub" id="nav-news"><a href="#!">News</a></li>
+                <li class="sub" id="nav-competition"><a href="#!">Wettkämpfe</a></li>
+                <li class="sub" id="nav-event"><a href="#!">Termine</a></li>
                 <li><div class="divider"></div></li>
                 <li><a class="subheader bolden">Dateien</a></li>
-                <li class="sub"><a id="nav-files" href="#!">Dateien</a></li>
-                <li class="sub"><a id="nav-download" href="#!">Downloads</a></li>
-                <li class="sub"><a id="nav-pictures" href="#!">Bilder</a></li>
+                <li class="sub" id="nav-files"><a href="#!">Dateien</a></li>
+                <li class="sub" id="nav-download"><a href="#!">Downloads</a></li>
+                <li class="sub" id="nav-pictures"><a href="#!">Bilder</a></li>
                 <li><div class="divider"></div></li>
                 <li><a class="subheader bolden">Administration</a></li>
-                <li class="sub"><a id="nav-database" href="#!">Datenbank</a></li>
-                <li class="sub"><a id="nav-users" href="#!">Benutzer</a></li>
+                <li class="sub" id="nav-database"><a href="#!">Datenbank</a></li>
+                <li class="sub" id="nav-users"><a href="users.php">Benutzer</a></li>
                 <li><div class="divider"></div></li>
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>

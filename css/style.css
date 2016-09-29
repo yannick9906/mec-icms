@@ -78,11 +78,3 @@ header, main, footer {
 .sub {
     padding-left: 57px;
 }
-
-a.active {
-    transition: background-color ease 1s;
-    -webkit-transition: background-color ease 1s;
-    -moz-transition: background-color ease 1s;
-    -o-transition: background-color ease 1s;
-    background-color: rgba(33, 150, 243,0.5);
-}
