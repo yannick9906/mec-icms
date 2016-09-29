@@ -260,6 +260,21 @@
         }
 
         /**
+         * Returns all permission for this user as an use-ready array
+         *
+         * @return array
+         */
+        public function getPermAsArray() {
+            $array = [];
+            $pdo = new PDO_MYSQL();
+            $stmt = $pdo->queryMulti("SELECT * FROM entrance_user_rights WHERE uID = :uid", [":uid" => $this->uID]);
+            while($row = $stmt->fetchObject()) {
+                $array[str_replace(".", "_", $row->permission)] = (int) $this->isActionAllowed($row->permission);
+            }
+            return $array;
+        }
+
+        /**
          * @return int
          */
         public function getUID() {
@@ -309,5 +324,19 @@
         }
         public function comparePassHash($passHash) {
             return $this->uPassHash == $passHash;
+        }
+
+        /**
+         * @return string
+         */
+        public function getUEmail() {
+            return $this->uEmail;
+        }
+
+        /**
+         * @param string $uEmail
+         */
+        public function setUEmail($uEmail) {
+            $this->uEmail = $uEmail;
         }
     }

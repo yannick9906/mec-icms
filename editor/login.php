@@ -1,3 +1,8 @@
+<?php
+    if($_GET["err"] == 3) {
+        session_destroy();
+    }
+?>
 <!DOCTYPE html>
 <html lang="de">
     <head>

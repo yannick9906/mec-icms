@@ -47,24 +47,32 @@
         public static function forwardTo($url) {
             echo "<meta http-equiv=\"refresh\" content=\"0; url=$url\" />";
         }
+
         /**
-         * @param $title String
-         * @param $user \ICMS\User
-         * @param bool $backable
-         * @param bool $editor
-         * @param string $undoUrl
+         * @param string     $title
+         * @param \ICMS\User $user
+         * @param string     $highlight
+         * @param bool       $backable
+         * @param bool       $editor
+         * @param string     $undoUrl
          * @return array
          */
-        public static function getEditorPageDataStub($title, $user, $backable = false, $editor = false, $undoUrl = "") {
+        public static function getEditorPageDataStub($title, $user, $highlight, $backable = false, $editor = false, $undoUrl = "") {
             return [
                 "header" => [
                     "title" => $title,
                     "usrname" => $user->getUName(),
+                    "usrchar" => strtoupper(substr($user->getUName(), 0, 1)),
                     "realname" => $user->getURealname(),
+                    "email" => $user->getUEmail(),
+                    "uID" => $user->getUID(),
+                    "perm" => $user->getPermAsArray(),
                     "editor" => $editor ? 1:0,
                     "undoUrl" => $undoUrl,
-                    "backable" => $backable ? 1:0
+                    "backable" => $backable ? 1:0,
+                    "highlight" => $highlight
                 ],
+                "perm" => $user->getPermAsArray()
             ];
         }
         /**

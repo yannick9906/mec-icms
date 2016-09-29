@@ -6,9 +6,6 @@
      * Time: 20:00
      */
 
-    ini_set("display_errors", "on");
-    error_reporting(E_ALL);
-
     require_once("../../classes/Util.php");
     require_once("../../classes/User.php");
     require_once("../../classes/PDO_Mysql.php");
