@@ -35,7 +35,7 @@
             </tr>
             </tbody>
         </table>
-        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <div class="fixed-action-btn">
             <a class="btn-floating btn-large waves-effect waves-light blue" onclick="newUser();">
                 <i class="mddi mddi-account-plus"></i>
             </a>
