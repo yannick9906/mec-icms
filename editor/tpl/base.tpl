@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MEC ICMS../ - {$args.title}</title>
+    <title>MEC ICMS - {$args.title}</title>
     <meta charset="utf-8" />
     <!--Import Google Icon Font-->
     <!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
@@ -24,6 +24,8 @@
 <script type="text/javascript" src="../libs/jquery-2.2.1.min.js"></script>
 <script type="text/javascript" src="../libs/materialize/js/materialize.min.js"></script>
 <script type="text/javascript" src="../libs/handlebars.js"></script>
+<script type="text/javascript" src="../libs/md5.js"></script>
+
 
 <!-- Dropdown Structure -->
 <ul id="dropdown1" class="dropdown-content">
@@ -47,19 +49,19 @@
                 <li id="nav-dashboard"><a href="dashboard.php">Dashboard</a></li>
                 <li class="sub" id="nav-logout"><a href="login.php?err=3">Logout</a></li>
                 <li><div class="divider"></div></li>
-                <li class="subheader"><a class="subheader bolden">Seiten</a></li>
+                <li class="subheader"><a class="subheader indigo-text bolden">Seiten</a></li>
                 <li class="sub" id="nav-article"><a href="#!">Artikel</a></li>
                 <li class="sub" id="nav-news"><a href="#!">News</a></li>
                 <li class="sub" id="nav-competition"><a href="#!">Wettkämpfe</a></li>
                 <li class="sub" id="nav-event"><a href="#!">Termine</a></li>
                 <li><div class="divider"></div></li>
-                <li><a class="subheader bolden">Dateien</a></li>
+                <li><a class="subheader indigo-text bolden">Dateien</a></li>
                 <li class="sub" id="nav-files"><a href="#!">Dateien</a></li>
                 <li class="sub" id="nav-download"><a href="#!">Downloads</a></li>
                 <li class="sub" id="nav-pictures"><a href="#!">Bilder</a></li>
                 <li><div class="divider"></div></li>
-                <li><a class="subheader bolden">Administration</a></li>
-                <li class="sub" id="nav-database"><a href="#!">Datenbank</a></li>
+                <li><a class="subheader indigo-text bolden">Administration</a></li>
+                <li class="sub" id="nav-database"><a href="../adminer/">Datenbank</a></li>
                 <li class="sub" id="nav-users"><a href="users.php">Benutzer</a></li>
                 <li><div class="divider"></div></li>
             </ul>

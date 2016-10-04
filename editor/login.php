@@ -79,16 +79,18 @@
         var passwordField =  $("#password");
 
         $(document).ready(function() {
-            if(<? if(isset($_GET["err"])) echo $_GET["err"]; else echo 0; ?> == 1) {
+            if(<?php if(isset($_GET["err"])) echo $_GET["err"]; else echo 0; ?> == 1) {
                 Materialize.toast("Kennwort falsch", 2000, "red");
                 usernameField.removeClass("valid");
                 usernameField.addClass("invalid");
-            } else if(<? if(isset($_GET["err"])) echo $_GET["err"]; else echo 0; ?> == 2) {
+            } else if(<?php if(isset($_GET["err"])) echo $_GET["err"]; else echo 0; ?> == 2) {
                 Materialize.toast("Benutzername falsch", 2000, "red");
                 passwordField.removeClass("valid");
                 passwordField.addClass("invalid");
-            } else if(<? if(isset($_GET["err"])) echo $_GET["err"]; else echo 0; ?> == 3) {
+            } else if(<?php if(isset($_GET["err"])) echo $_GET["err"]; else echo 0; ?> == 3) {
                 Materialize.toast("Logout erfolgreich", 2000, "green");
+            } else if(<?php if(isset($_GET["err"])) echo $_GET["err"]; else echo 0; ?> == 4) {
+                Materialize.toast("Bitte erneut anmelden", 2000, "orange");
             } else {
                 passwordField.removeClass("valid");
                 passwordField.removeClass("invalid");

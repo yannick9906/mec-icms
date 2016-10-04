@@ -17,7 +17,8 @@
         public static function checkSession() {
             session_start();
             if(!isset($_SESSION["uID"])) {
-                echo json_encode(["success" => false, "error" => "NoLogin"]);
+                //echo json_encode(["success" => false, "error" => "NoLogin"]);
+                self::forwardTo("login.php?err=4");
                 exit;
             } else {
                 $user = User::fromUID($_SESSION["uID"]);

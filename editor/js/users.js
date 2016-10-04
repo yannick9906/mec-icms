@@ -9,7 +9,7 @@ var linkDetail = "citizen.php?action=citizeninfosimple";
 var pagesize = 12;
 ///////////////////////////////////////////////////////////////////////
 var listElemTmplt = `
-    <tr id="row-{{i}}" style="display: none;">
+    <tr id="row-{{i}}" style="display: none;" onclick="editUser({{id}})">
         <td>{{id}}</td>
         <td>{{name}} <span class="grey-text">[{{usrname}}]</span></td>
         <td>{{email}}</td>
@@ -25,6 +25,7 @@ var maxPages = 1;
 var size = 0;
 var sort = "ascID";
 var data = "";
+var currEdit = -1;
 ///////////////////////////////////////////////////////////////////////
 
 function setPage(apage) {
@@ -90,6 +91,90 @@ function updateCaller() {
     updatePages();
     window.setTimeout("updateCaller()", 1000);
 }
+
+///////////////////////////////////////
+function backToList() {
+    $("#editUserForm").fadeOut(200, function() {
+        $("#userList").fadeIn(200);
+    });
+    $("#newUserForm").fadeOut(200);
+    currEdit = -1;
+}
+
+function newUser() {
+    $("#new-username").removeClass("invalid");
+    $("#new-username").val("");
+    $("#new-realname").val("");
+    $("#new-password").val("");
+    $("#new-email").val("");
+    $("#userList").fadeOut(200, function() {
+        $("#newUserForm").fadeIn(200);
+    });
+}
+
+function submitNewUser() {
+    data = {
+        username: $("#new-username").val(),
+        realname: $("#new-realname").val(),
+        passhash: md5($("#new-password").val()),
+        email: $("#new-email").val()
+    };
+    $.post("../api/users/create.php", data, function(response) {
+        var json = JSON.parse(response);
+        if(json.success == "1") {
+            Materialize.toast("Benutzer erstellt", 2000, "green");
+            backToList();
+        } else {
+            if(json.error == "missing fields") {
+                Materialize.toast("Bitte alle Felder ausfüllen", 2000, "red");
+            } else if(json.error == "username exists") {
+                Materialize.toast("Der Benutzername existiert bereits", 2000, "red");
+                $("#new-username").addClass("invalid");
+            }
+        }
+    });
+}
+
+function editUser(id) {
+    currEdit = id;
+    $.getJSON("../api/users/details.php?id="+id,null, function(json) {
+        $("#edit-username").val(json.username);
+        $("#edit-realname").val(json.realname);
+        $("#edit-password").val("");
+        $("#edit-email").val(json.email);
+        Materialize.updateTextFields();
+        $("#userList").fadeOut(200, function() {
+            $("#editUserForm").fadeIn(200);
+        });
+    })
+}
+
+function submitEditUser() {
+    var password = $("#edit-password").val();
+    var passhash = "NOUPDATE";
+    if(password != "") {
+        passhash = md5(password)
+    };
+
+    data = {
+        realname: $("#edit-realname").val(),
+        passhash: passhash,
+        email: $("#edit-email").val()
+    };
+
+    $.post("../api/users/update.php?id="+currEdit, data, function(response) {
+        var json = JSON.parse(response);
+        if(json.success == "1") {
+            Materialize.toast("Benutzer aktualisiert", 2000, "green");
+            backToList();
+        } else {
+            if(json.error == "missing fields") {
+                Materialize.toast("Bitte alle Felder ausfüllen", 2000, "red");
+            }
+        }
+    });
+}
+///////////////////////////////////////
 
 var delay = (function(){
     var timer = 0;

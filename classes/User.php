@@ -68,7 +68,8 @@
             return [
                 "uID" => $this->uID,
                 "username" => $this->uName,
-                "realname" => $this->uRealname
+                "realname" => $this->uRealname,
+                "email" => $this->uEmail
             ];
         }
         /**
@@ -80,7 +81,8 @@
             return
                 "id:        ".$this->uID."\n".
                 "usrname:   ".$this->uName."\n".
-                "realname:  ".$this->uRealname."\n";
+                "realname:  ".$this->uRealname."\n".
+                "email:     ".$this->uEmail."\n";
         }
         /**
          * checks if a username is in the user db
@@ -189,7 +191,7 @@
          * Saves the Changes made to this object to the db
          */
         public function saveChanges() {
-            $this->pdo->queryUpdate("pos_user",
+            $this->pdo->queryUpdate("icms_user",
                 ["username" => utf8_decode($this->uName),
                  "realname" => utf8_decode($this->uRealname),
                  "passhash" => $this->uPassHash,
@@ -209,7 +211,7 @@
          */
         public static function createUser($username, $realname, $passwdhash, $email) {
             $pdo = new PDO_MYSQL();
-            $pdo->queryInsert("pos_user",
+            $pdo->queryInsert("icms_user",
                 ["username" => $username,
                  "realname" => $realname,
                  "passhash" => $passwdhash,

@@ -1,6 +1,6 @@
 {include file="base.tpl" args=$header}
 <main>
-    <div class="container row">
+    <div class="container row" id="userList">
         <form class="col s12 m9" method="post" action="" id="live-search">
             <div class="row" id="search">
                 <div class="input-field col s12 ">
@@ -33,13 +33,83 @@
             <tr>
                 <td colspan="3" class="grey-text center"><i>Elemente werden geladen...</i></td>
             </tr>
-            <!--<tr>
-                <td>1</td>
-                <td>Yannick Félix <span class="grey-text">[yannick]</span></td>
-                <td>yannick.felix1999@gmail.com</td>
-            </tr>-->
             </tbody>
         </table>
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large waves-effect waves-light blue" onclick="newUser();">
+                <i class="mddi mddi-account-plus"></i>
+            </a>
+        </div>
+    </div>
+    <div class="container" id="newUserForm" style="display: none;">
+        <div class="card-panel">
+            <div class="row">
+                <div class="col s12 bolden indigo-text">
+                    Neuen Benutzer erstellen
+                </div>
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="new-username" type="text">
+                            <label for="new-username">Benutzername</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="new-realname" type="text">
+                            <label for="new-realname">Voller Name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="new-password" type="password" class="validate">
+                            <label for="new-password">Passwort</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="new-email" type="email" class="validate">
+                            <label for="new-email">Email</label>
+                        </div>
+                    </div>
+                </form>
+                <div class="col s12">
+                    <a class="waves-effect waves-light btn indigo right" onclick="submitNewUser();">erstellen</a>
+                    <a class="waves-effect waves-red btn-flat right" onclick="backToList();">abbrechen</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="editUserForm" style="display: none;">
+        <div class="card-panel">
+            <div class="row">
+                <div class="col s12 bolden indigo-text">
+                    Benutzer bearbeiten
+                </div>
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="edit-username" type="text" disabled>
+                            <label for="edit-username">Benutzername</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="edit-realname" type="text">
+                            <label for="edit-realname">Voller Name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="edit-password" type="password" class="validate">
+                            <label for="edit-password">Passwort</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="edit-email" type="email" class="validate">
+                            <label for="edit-email">Email</label>
+                        </div>
+                    </div>
+                </form>
+                <div class="col s12">
+                    <a class="waves-effect waves-light btn indigo right" onclick="submitEditUser();">speichern</a>
+                    <a class="waves-effect waves-red btn-flat right" onclick="backToList();">abbrechen</a>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 <script>
