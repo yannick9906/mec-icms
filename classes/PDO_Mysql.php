@@ -5,9 +5,7 @@
      * Date: 26.09.2016
      * Time: 22:20
      */
-
     namespace ICMS;
-
     use PDO;
     require_once 'passwords.php'; //DB Pdw
     class PDO_MYSQL {
@@ -22,7 +20,6 @@
         private $pass   = "";
         private $user   = 'root';
         private $dbname = 'icms';
-
         /**
          * @return PDO PDO-Object
          */
@@ -30,7 +27,6 @@
             $this->pass = getMysqlPasskey();
             return new PDO('mysql:host='.$this->host.';port='.$this->port.';dbname='.$this->dbname,$this->user,$this->pass);
         }
-
         public function query($query, $array = []) {
             $db = $this->connect();
             $stmt = $db->prepare($query);
@@ -38,7 +34,6 @@
             else $stmt->execute();
             return $stmt->fetchObject();
         }
-
         public function queryMulti($query, $array = []) {
             $db = $this->connect();
             $stmt = $db->prepare($query);
@@ -46,7 +41,6 @@
             else $stmt->execute();
             return $stmt;
         }
-
         public function queryPagedList($tablename, $startElem, $endElem, $searchableFields, $search, $sortSQL) {
             $db = $this->connect();
             if($search != "") {
@@ -66,7 +60,6 @@
             $stmt->execute();
             return $stmt;
         }
-
         /**
          * Makes a INSERT query
          *
@@ -87,7 +80,6 @@
             $stmt->execute();
             return $stmt->fetchObject();
         }
-
         /**
          * Makes a UPDATE query
          *
@@ -111,7 +103,6 @@
             $stmt->execute();
             return $stmt->fetchObject();
         }
-
         /**
          * Bind the fields from an array to a statement
          *
