@@ -76,18 +76,27 @@
                 "perm" => $user->getPermAsArray()
             ];
         }
+
         /**
-         * @param $secs int
+         * Returns the timestamp as an readable production ready text (w/ Time)
+         *
+         * @param $timestamp int input datetime
          * @return string
          */
-        public static function seconds_to_time($secs) {
-            $dt = new DateTime('@' . $secs, new DateTimeZone('UTC'));
-            $array = array('days'    => $dt->format('z'),
-                           'hours'   => $dt->format('G'),
-                           'minutes' => $dt->format('i'),
-                           'seconds' => $dt->format('s'));
-            return $array["days"]." Tage ".$array["hours"]."h ".$array["minutes"]."m ".$array["seconds"]."s";
+        public static function dbDateToReadableWithTime($timestamp) {
+            return date("d. M Y - H:i", $timestamp);
         }
+
+        /**
+         * Returns the timestamp as an readable production ready text (w/o time, only date)
+         *
+         * @param $timestamp int input datetime
+         * @return string
+         */
+        public static function dbDateToReadableWithOutTime($timestamp) {
+            return date("d. M Y", $timestamp);
+        }
+
         public static function redGreenNegPos($value) {
             if($value > 0) return "<span class='green-text'>+$value S</span>";
             if($value == 0) return "<span class='black-text'>$value S</span>";

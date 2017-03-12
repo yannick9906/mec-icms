@@ -15,11 +15,16 @@
          * @var string host, pass, user, dbname
          * @var int port
          */
-        private $host   = 'ybook.lima-db.de';
+        /*private $host   = 'ybook.lima-db.de';
         private $port   = 3306;
         private $pass   = "";
         private $user   = 'USER302476';
-        private $dbname = 'db_302476_2';
+        private $dbname = 'db_302476_2';*/
+        private $host   = 'localhost';
+        private $port   = 3306;
+        private $pass   = "";
+        private $user   = 'vzvgmcbxxg';
+        private $dbname = 'vzvgmcbxxg';
         /**
          * @return PDO PDO-Object
          */
@@ -58,6 +63,7 @@
             $stmt->bindValue(":start", $startElem, PDO::PARAM_INT);
             $stmt->bindValue(":end", $endElem, PDO::PARAM_INT);
             $stmt->execute();
+            //var_dump($stmt->errorInfo());
             return $stmt;
         }
         /**

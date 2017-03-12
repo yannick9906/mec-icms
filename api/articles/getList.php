@@ -2,8 +2,8 @@
     /**
      * Created by PhpStorm.
      * User: yanni
-     * Date: 29.09.2016
-     * Time: 19:53
+     * Date: 2017-03-12
+     * Time: 01:29 AM
      */
 
     ini_set("display_errors", "on");
@@ -13,9 +13,10 @@
     require_once '../../classes/User.php';
     require_once '../../classes/Permissions.php';
     require_once '../../classes/Util.php';
+    require_once '../../classes/Article.php';
 
     $user = \ICMS\Util::checkSession();
     $pdo = new \ICMS\PDO_MYSQL();
 
-    $users = \ICMS\User::getList($_GET["page"], intval($_GET["pagesize"]), $_GET["search"], $_GET["sort"]);
+    $users = \ICMS\Article::getList($_GET["page"], intval($_GET["pagesize"]), $_GET["search"], $_GET["sort"]);
     echo json_encode($users);

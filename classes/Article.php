@@ -25,7 +25,7 @@
          * @param string $text
          * @param int    $vID
          * @param int    $lastAuthorID
-         * @param date   $lastEditDate
+         * @param int    $lastEditDate
          * @param int    $version
          * @param int    $state
          */
@@ -38,7 +38,7 @@
             $this->text = utf8_decode($text);
             $this->vID = $vID;
             $this->lastAuthorID = $lastAuthorID;
-            $this->lastEditDate = $lastEditDate;
+            $this->lastEditDate = strtotime($lastEditDate);
             $this->version = $version;
             $this->state = $state;
 
@@ -48,25 +48,19 @@
         public static function fromAID($aid) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM icms_articles WHERE aID = :aid ORDER BY version DESC LIMIT 1", [":aid" => $aid]);
-            return new Article($res->aID, $res->authorID, $res->name, $res->title, $res->header, $res->text, $res->vID, $res->lastAuthorID, $res->lastEditDate, $res->version, $res->state)
+            return new Article($res->aID, $res->authorID, $res->name, $res->title, $res->header, $res->text, $res->vID, $res->lastAuthorID, $res->lastEditDate, $res->version, $res->state);
         }
 
         public static function fromAIDLiveOnly($aid) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM icms_articles WHERE aID = :aid and state = 0 ORDER BY version DESC LIMIT 1", [":aid" => $aid]);
-            return new Article($res->aID, $res->authorID, $res->name, $res->title, $res->header, $res->text, $res->vID, $res->lastAuthorID, $res->lastEditDate, $res->version, $res->state)
+            return new Article($res->aID, $res->authorID, $res->name, $res->title, $res->header, $res->text, $res->vID, $res->lastAuthorID, $res->lastEditDate, $res->version, $res->state);
         }
 
         public static function fromVID($vid) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM icms_articles WHERE vID = :vid ORDER BY version DESC LIMIT 1", [":vid" => $vid]);
-            return new Article($res->aID, $res->authorID, $res->name, $res->title, $res->header, $res->text, $res->vID, $res->lastAuthorID, $res->lastEditDate, $res->version, $res->state)
-        }
-
-        public static function fromVID($vid) {
-            $pdo = new PDO_MYSQL();
-            $res = $pdo->query("SELECT * FROM schlopolis_sites WHERE ID = :vid ORDER BY version DESC LIMIT 1", [":vid" => $vid]);
-            return new Article($res->aID, $res->authorID, $res->name, $res->title, $res->header, $res->text, $res->vID, $res->lastAuthorID, $res->lastEditDate, $res->version, $res->state)
+            return new Article($res->aID, $res->authorID, $res->name, $res->title, $res->header, $res->text, $res->vID, $res->lastAuthorID, $res->lastEditDate, $res->version, $res->state);
         }
 
         /**
@@ -78,13 +72,16 @@
         public static function stateAsHtml($state) {
             switch ($state) {
                 case 0:
-                    return "check";
+                    return "Live";
                     break;
                 case 1:
-                    return "account-alert";
+                    return "Warte auf Bestätigung";
                     break;
                 case 2:
-                    return "close";
+                    return "Nicht öffentlich";
+                    break;
+                case 3:
+                    return "Abgelehnt";
                     break;
             }
         }
@@ -97,13 +94,16 @@
         public static function stateAsCSS($state) {
             switch ($state) {
                 case 0:
-                    return "green-text";
+                    return "green-text mddi mddi-check";
                     break;
                 case 1:
-                    return "orange-text";
+                    return "orange-text mddi mddi-account-alert";
                     break;
                 case 2:
-                    return "red-text";
+                    return "red-text mddi mddi-earth-off";
+                    break;
+                case 3:
+                    return "red-text mddi mddi-close";
                     break;
             }
         }
@@ -132,6 +132,103 @@
                 "stateCSS" => self::stateAsCSS($this->state),
                 "stateText" => self::stateAsHtml($this->state),
                 "version" => $this->version
+            ];
+        }
+
+        /**
+         * Returns all entries matching the search and the page
+         *
+         * @param int    $page
+         * @param int    $pagesize
+         * @param string $search
+         * @param string $sort
+         *
+         * @return array Normal dict array with data
+         */
+        public static function getList($page = 1, $pagesize = 75, $search = "", $sort = "") {
+            $ASORTING = [
+                "nameAsc"  => "ORDER BY name ASC",
+                "idAsc"    => "ORDER BY aID ASC",
+                "nameDesc" => "ORDER BY name DESC",
+                "idDesc"   => "ORDER BY aID DESC",
+                "dateAsc"  => "ORDER BY lastEditDate DESC",
+                "dateDesc" => "ORDER BY lastEditDate DESC",
+                "" => ""
+            ];
+
+            $pdo = new PDO_MYSQL();
+            $startElem = ($page-1) * $pagesize;
+            $endElem = $pagesize;
+            $stmt = $pdo->queryPagedList("icms_articles", $startElem, $endElem, ["name","title", "header"], $search, $ASORTING[$sort]);
+            $hits = self::getListMeta($page, $pagesize, $search);
+            while($row = $stmt->fetchObject()) {
+                array_push($hits["articles"], [
+                    "id" => $row->aID,
+                    "vId" => $row->vID,
+                    "name" => $row->name,
+                    "authorReal" => User::fromUID($row->authorID)->getURealname(),
+                    "lastEdit" => Util::dbDateToReadableWithTime(strtotime($row->lastEditDate)),
+                    "lastEditAuthor" => User::fromUID($row->lastAuthorID)->getURealname(),
+                    "state" => $row->state,
+                    "stateCSS" => self::stateAsCSS($row->state),
+                    "stateText" => self::stateAsHtml($row->state),
+                    "version" => $row->version
+                ]);
+            }
+            return $hits;
+        }
+        /**
+         * @see getList()
+         * but you'll get Objects instead of an array
+         *
+         * @param int $page
+         * @param int $pagesize
+         * @param string $search
+         *
+         * @return User[]
+         */
+        public static function getListObjects($page, $pagesize, $search) {
+            $pdo = new PDO_MYSQL();
+            $startElem = ($page-1) * $pagesize;
+            $endElem = $pagesize;
+            $stmt = $pdo->queryPagedList("icms_articles", $startElem, $endElem, ["name","title", "header"], $search);
+            $hits = [];
+            while($row = $stmt->fetchObject()) {
+                array_push($hits, new Article(
+                        $row->aID,
+                        $row->authorID,
+                        $row->name,
+                        $row->title,
+                        $row->header,
+                        $row->text,
+                        $row->vID,
+                        $row->lastAuthorID,
+                        $row->lastEditDate,
+                        $row->version,
+                        $row->state)
+                );
+            }
+            return $hits;
+        }
+        /**
+         * Returns the array stub for the getLists() method
+         *
+         * @param int $page
+         * @param int $pagesize
+         * @param string $search
+         * @return array
+         */
+        public static function getListMeta($page, $pagesize, $search) {
+            $pdo = new PDO_MYSQL();
+            if($search != "") $res = $pdo->query("select count(*) as size from icms_articles where lower(concat(name,' ',title,' ',header)) like lower(:search)", [":search" => "%".$search."%"]);
+            else $res = $pdo->query("select count(*) as size from icms_user");
+            $size = $res->size;
+            $maxpage = ceil($size / $pagesize);
+            return [
+                "size" => $size,
+                "maxPage" => $maxpage,
+                "page" => $page,
+                "articles" => []
             ];
         }
 
@@ -206,16 +303,16 @@
         }
 
         /**
-         * @return date
+         * @return int
          */
-        public function getLastEditDate(): date {
+        public function getLastEditDate(): int {
             return $this->lastEditDate;
         }
 
         /**
-         * @param date $lastEditDate
+         * @param int $lastEditDate
          */
-        public function setLastEditDate(date $lastEditDate) {
+        public function setLastEditDate(int $lastEditDate) {
             $this->lastEditDate = $lastEditDate;
         }
 

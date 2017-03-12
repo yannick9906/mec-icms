@@ -1,19 +1,23 @@
 /**
- * Created by yanni on 29.09.2016.
+ * Created by yanni on 2017-03-11.
  */
 
 let sortName = "#sortCurr";
-let listName = "#users"
-let linkList = "../api/users/getList.php";
-let jsonField = "users"
+let listName = "#articles"
+let linkList = "../api/articles/getList.php";
+let jsonField = "articles"
 let pagesize = 12;
 ///////////////////////////////////////////////////////////////////////
 // TODO Fill List Template and update() method
 let listElemTmplt = `
-    <tr id="row-{{i}}" style="display: none;" onclick="editUser({{id}})">
+    <tr id="row-{{i}}" style="display: none;">
         <td>{{id}}</td>
-        <td>{{name}} <span class="grey-text">[{{usrname}}]</span></td>
-        <td>{{email}}</td>
+        <td><b>{{name}}</b><br/>erstellt von {{authorReal}}</td>
+        <td>Version {{version}} <i class="{{{stateCSS}}}"></i> <span class="{{{color}}}">{{stateText}}</span><br/>von {{lastEditAuthor}} - {{lastEdit}}</td>
+        <td>
+        <a href="#!" style="padding-left:10px;padding-right:10px;" class="btn-flat right red-text"><i class="mddi mddi-delete"></i></a>
+        <a href="articles.php?edit={{vId}}" style="padding-left:10px;padding-right:10px;" class="btn-flat right"><i class="mddi mddi-pencil"></i></a>
+        </td>
     </tr>
     `;
 let template = Handlebars.compile(listElemTmplt);
@@ -25,7 +29,7 @@ let reqPage = 1;
 let maxPages = 1;
 let size = 0;
 let sort = "ascID";
-let data = "";
+var data = "";
 let currEdit = -1;
 ///////////////////////////////////////////////////////////////////////
 
@@ -78,8 +82,12 @@ function updateData() {
             $(listName).html("");
             for(let i = 0; i < list.length; i++) {
                 let e = list[i];
-                $(listName).append(template({i: i,id: e.uID, usrname: e.username, name: e.realname, email: e.email}))
+                e.i = i;
+                e.color = e.stateCSS.split(" ")[0];
+                $(listName).append(template(e));
                 size = i;
+                delete e.i;
+                delete e.color;
             }
             data = JSON.stringify(list);
 
@@ -110,7 +118,7 @@ function backToList() {
     currEdit = -1;
 }
 
-function newUser() {
+function newArticle() {
     $("#new-username").removeClass("invalid");
     $("#new-username").val("");
     $("#new-realname").val("");
@@ -121,7 +129,7 @@ function newUser() {
     });
 }
 
-function submitNewUser() {
+function submitNewArticle() {
     data = {
         username: $("#new-username").val(),
         realname: $("#new-realname").val(),
@@ -144,45 +152,6 @@ function submitNewUser() {
     });
 }
 
-function editUser(id) {
-    currEdit = id;
-    $.getJSON("../api/users/details.php?id="+id,null, function(json) {
-        $("#edit-username").val(json.username);
-        $("#edit-realname").val(json.realname);
-        $("#edit-password").val("");
-        $("#edit-email").val(json.email);
-        Materialize.updateTextFields();
-        $("#userList").fadeOut(200, function() {
-            $("#editUserForm").fadeIn(200);
-        });
-    })
-}
-
-function submitEditUser() {
-    let password = $("#edit-password").val();
-    let passhash = "NOUPDATE";
-    if(password != "") {
-        passhash = md5(password)
-    };
-
-    data = {
-        realname: $("#edit-realname").val(),
-        passhash: passhash,
-        email: $("#edit-email").val()
-    };
-
-    $.post("../api/users/update.php?id="+currEdit, data, function(response) {
-        let json = JSON.parse(response);
-        if(json.success == "1") {
-            Materialize.toast("Benutzer aktualisiert", 2000, "green");
-            backToList();
-        } else {
-            if(json.error == "missing fields") {
-                Materialize.toast("Bitte alle Felder ausfüllen", 2000, "red");
-            }
-        }
-    });
-}
 ///////////////////////////////////////
 
 var delay = (function(){

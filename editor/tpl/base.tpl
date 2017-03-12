@@ -51,7 +51,7 @@
                 <li><div class="divider"></div></li>
                 <li class="subheader"><a class="subheader indigo-text bolden">Seiten</a></li>
                 <li class="sub" id="nav-special"><a href="#!">Spezial</a></li>
-                <li class="sub" id="nav-article"><a href="#!">Artikel</a></li>
+                <li class="sub" id="nav-article"><a href="articles.php">Artikel</a></li>
                 <li class="sub" id="nav-news"><a href="#!">News</a></li>
                 <li class="sub" id="nav-competition"><a href="#!">Wettkämpfe</a></li>
                 <li class="sub" id="nav-event"><a href="#!">Termine</a></li>
