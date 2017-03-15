@@ -15,16 +15,16 @@
          * @var string host, pass, user, dbname
          * @var int port
          */
-        /*private $host   = 'ybook.lima-db.de';
-        private $port   = 3306;
-        private $pass   = "";
-        private $user   = 'USER302476';
-        private $dbname = 'db_302476_2';*/
         private $host   = 'localhost';
         private $port   = 3306;
         private $pass   = "";
+        private $user   = 'root';
+        private $dbname = 'icms';
+        /*private $host   = 'localhost';
+        private $port   = 3306;
+        private $pass   = "";
         private $user   = 'vzvgmcbxxg';
-        private $dbname = 'vzvgmcbxxg';
+        private $dbname = 'vzvgmcbxxg';*/
         /**
          * @return PDO PDO-Object
          */

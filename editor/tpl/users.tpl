@@ -24,14 +24,16 @@
         <table class="highlight col s12">
             <thead>
             <tr>
-                <th data-field="id">ID</th>
-                <th data-field="name">Name</th>
-                <th data-field="email">Email</th>
+                <th data-field="id" width="50px">ID</th>
+                <th data-field="name" width="40%">Name</th>
+                <th data-field="email" width="40%">Email</th>
             </tr>
             </thead>
             <tbody id="users">
             <tr>
-                <td colspan="3" class="grey-text center"><i>Elemente werden geladen...</i></td>
+                <td><span class="placeholder-big light" style="width: 30px;"></td>
+                <td><span class="placeholder-small" style="width: 30%;"></span><span class="placeholder-small light" style="width: 20%;"></td>
+                <td><span class="placeholder-small light" style="width: 100%;"></span></td>
             </tr>
             </tbody>
         </table>

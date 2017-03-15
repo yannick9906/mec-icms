@@ -1,0 +1,236 @@
+
+body {
+    background-size: cover;
+    background: url("pattern.png") no-repeat center;
+    /*background-color: #5C6BC0;*/
+    font-family: 'Ubuntu';
+    color: white;
+}
+
+.login-container {
+    background-color: #3F51B5;
+    border: 0px;
+    border-radius: 5px;
+    box-shadow: 0px 3px 3px 3px #303F9F;
+    position: fixed;
+    left: 50%;
+    margin-left: -150px;
+    top: 50%;
+    margin-top: -125px;
+    width: 300px;
+    height: 200px;
+    padding: 25px;
+}
+
+/* form starting stylings ------------------------------- */
+.group {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+input.nor[type=text], input.nor[type=password] {
+    font-size: 18px;
+    color: #fff;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 300px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: transparent;
+}
+
+input.err[type=text], input.err[type=password] {
+    font-size: 18px;
+    color: #fff;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 300px;
+    border: none;
+    border-bottom: 1px solid #f44336;
+    background-color: transparent;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    outline: none;
+}
+
+/* LABEL ======================================= */
+label {
+    color: #fff;
+    font-size: 18px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+/* active state */
+input[type=text]:focus ~ label, input[type=text]:valid ~ label, input[type=password]:focus ~ label, input[type=password]:valid ~ label {
+    top: -20px;
+    font-size: 14px;
+    color: #fff;
+}
+
+/* BOTTOM BARS ================================= */
+.bar, .barerr {
+    position: relative;
+    display: block;
+    width: 300px;
+}
+
+.bar:before, .bar:after, .barerr:before, .barerr:after {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    background: #fff;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+.bar:before, .barerr:before {
+    left: 50%;
+}
+
+.bar:after, .barerr:after {
+    right: 50%;
+}
+
+.barerr:before, .barerr:after {
+    background: #f44336;
+}
+
+/* active state */
+input[type=text]:focus ~ .bar:before, input[type=text]:focus ~ .bar:after, input[type=password]:focus ~ .bar:before, input[type=password]:focus ~ .bar:after, input[type=text]:focus ~ .barerr:before, input[type=text]:focus ~ .barerr:after, input[type=password]:focus ~ .barerr:before, input[type=password]:focus ~ .barerr:after {
+    width: 50%;
+}
+
+/* HIGHLIGHTER ================================== */
+.highlight {
+    position: absolute;
+    height: 60%;
+    width: 100px;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* active state */
+input[type=text]:focus ~ .highlight, input[type=password]:focus ~ .highlight {
+    -webkit-animation: inputHighlighter 0.3s ease;
+    -moz-animation: inputHighlighter 0.3s ease;
+    animation: inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@-moz-keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+h2 {
+    text-align: center;
+    margin-top: -10px;
+}
+
+.btn {
+    text-align: right;
+    width: auto;
+    right: 20px;
+    position: absolute;
+    bottom: 20px;
+    background-color: transparent;
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: "Ubuntu";
+    border: none;
+    transition: all 400ms ease;
+    outline: none;
+    padding: 5px 10px;
+}
+
+.btn:hover {
+    background-color: #3F51B5;
+    border: 0px;
+    border-radius: 2px;
+    box-shadow: 0px 3px 3px 3px #303F9F;
+    transition: all 100ms ease;
+}
+
+.btn:active {
+    border: 0px;
+    border-radius: 2px;
+    margin-bottom: -2px;
+    box-shadow: 0px 1px 3px 3px #303F9F;
+}
+
+.close {
+    text-align: right;
+    width: auto;
+    left: 15px;
+    position: absolute;
+    top: 9px;
+    background-color: transparent;
+    color: #fff;
+    font-size: 20px;
+    font-family: "Ubuntu";
+    border: none;
+    transition: all 400ms ease;
+    outline: none;
+    text-decoration: none;
+    padding: 0px 5px
+}
+
+.close:hover {
+    background-color: #3F51B5;
+    border: 0px;
+    border-radius: 2px;
+    box-shadow: 0px 3px 3px 3px #303F9F;
+    transition: all 100ms ease;
+}
+
+.close:active {
+    border: 0px;
+    border-radius: 2px;
+    margin-top: 2px;
+    box-shadow: 0px 1px 3px 3px #303F9F;
+}
+
+.err {
+    color: #f44336;
+    line-height: 25px;
+    padding-left: 5px;
+}

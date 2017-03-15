@@ -46,7 +46,7 @@
                         <a href="#!"><span class="white-text email" style="text-shadow: 1px 1px 5px black;">{$args.email}</span></a>
                     </div></li>
                 <li id="nav-account"><a href="#!"><i class="material-icons">person</i>Account</a></li>
-                <li id="nav-dashboard"><a href="dashboard.php">Dashboard</a></li>
+                <li class="sub" id="nav-dashboard"><a href="dashboard.php">Dashboard</a></li>
                 <li class="sub" id="nav-logout"><a href="login.php?err=3">Logout</a></li>
                 <li><div class="divider"></div></li>
                 <li class="subheader"><a class="subheader indigo-text bolden">Seiten</a></li>

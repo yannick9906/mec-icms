@@ -15,8 +15,9 @@ let listElemTmplt = `
         <td><b>{{name}}</b><br/>erstellt von {{authorReal}}</td>
         <td>Version {{version}} <i class="{{{stateCSS}}}"></i> <span class="{{{color}}}">{{stateText}}</span><br/>von {{lastEditAuthor}} - {{lastEdit}}</td>
         <td>
-        <a href="#!" style="padding-left:10px;padding-right:10px;" class="btn-flat right red-text"><i class="mddi mddi-delete"></i></a>
-        <a href="articles.php?edit={{vId}}" style="padding-left:10px;padding-right:10px;" class="btn-flat right"><i class="mddi mddi-pencil"></i></a>
+        <a onclick="delete({{id}})" href="#!" style="padding-left:10px;padding-right:10px;" class="btn-flat right red-text tooltipped" data-position="top" data-delay="50" data-tooltip="Löschen"><i class="mddi mddi-delete"></i></a>
+        <a onclick="history({{id}})" href="#!" style="padding-left:10px;padding-right:10px;" class="btn-flat right tooltipped" data-position="top" data-delay="50" data-tooltip="Versionsverlauf"><i class="mddi mddi-history"></i></a>
+        <a href="articles.php?edit={{vId}}" style="padding-left:10px;padding-right:10px;" class="btn-flat right tooltipped" data-position="top" data-delay="50" data-tooltip="Bearbeiten"><i class="mddi mddi-pencil"></i></a>
         </td>
     </tr>
     `;
@@ -90,7 +91,6 @@ function updateData() {
                 delete e.color;
             }
             data = JSON.stringify(list);
-
             animate(0);
         }
     });
@@ -100,6 +100,7 @@ function animate(i) {
     if(i <= size) {
         $("#row-"+i).fadeIn(150);
         window.setTimeout("animate("+(i+1)+")", 150);
+        $('.tooltipped').tooltip({delay: 50});
     }
 }
 

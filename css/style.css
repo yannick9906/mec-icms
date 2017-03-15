@@ -106,3 +106,31 @@ header, main, footer {
 .sub {
     padding-left: 57px;
 }
+
+.placeholder-big {
+    display: inline-block;
+    background-color: #bdbdbd;
+    border-radius: 15px;
+    height: 0px;
+    border: #bdbdbd 15px solid;
+    margin: 5px;
+}
+
+.placeholder-small {
+    display: inline-block;
+    background-color: #bdbdbd;
+    border-radius: 5px;
+    height: 0px;
+    border: #bdbdbd 5px solid;
+    margin: 5px;
+}
+
+.placeholder-big.light {
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+}
+
+.placeholder-small.light {
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+}
