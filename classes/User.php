@@ -212,10 +212,10 @@
         public static function createUser($username, $realname, $passwdhash, $email) {
             $pdo = new PDO_MYSQL();
             $pdo->queryInsert("icms_user",
-                ["username" => $username,
-                 "realname" => $realname,
+                ["username" => utf8_decode($username),
+                 "realname" => utf8_decode($realname),
                  "passhash" => $passwdhash,
-                 "email" => $email]
+                 "email" => utf8_decode($email)]
             );
         }
 
