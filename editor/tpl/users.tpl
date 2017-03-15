@@ -30,11 +30,13 @@
             </tr>
             </thead>
             <tbody id="users">
+            {for i 0 10}
             <tr>
                 <td><span class="placeholder-big light" style="width: 30px;"></td>
                 <td><span class="placeholder-small" style="width: 30%;"></span><span class="placeholder-small light" style="width: 20%;"></td>
                 <td><span class="placeholder-small light" style="width: 100%;"></span></td>
             </tr>
+            {/for}
             </tbody>
         </table>
         <div class="fixed-action-btn">

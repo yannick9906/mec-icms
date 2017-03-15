@@ -159,7 +159,7 @@
             $pdo = new PDO_MYSQL();
             $startElem = ($page-1) * $pagesize;
             $endElem = $pagesize;
-            $stmt = $pdo->queryPagedList("icms_articles", $startElem, $endElem, ["name","title", "header"], $search, $ASORTING[$sort]);
+            $stmt = $pdo->queryPagedList("icms_articles", $startElem, $endElem, ["name","title", "header"], $search, $ASORTING[$sort], "state >= 0");
             $hits = self::getListMeta($page, $pagesize, $search);
             while($row = $stmt->fetchObject()) {
                 array_push($hits["articles"], [

@@ -1,6 +1,6 @@
 {include file="base.tpl" args=$header}
 <main>
-    <div class="container row" id="userList">
+    <div class="container row" id="articleList">
         <form class="col s12 m9" method="post" action="" id="live-search">
             <div class="row" id="search">
                 <div class="input-field col s12 ">
@@ -33,6 +33,7 @@
             </tr>
             </thead>
             <tbody id="articles">
+            {for i 0 10}
             <tr>
                 <td><span class="placeholder-big light" style="width: 30px;"></span></td>
                 <td><span class="placeholder-small" style="width: 100%;"></span><br/><span class="placeholder-small light" style="width: 100%;"></span></td>
@@ -43,6 +44,7 @@
                     <span class="placeholder-big right" style="width: 30px;"></span>
                 </td>
             </tr>
+            {/for}
             </tbody>
         </table>
         <div class="fixed-action-btn">

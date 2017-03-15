@@ -45,25 +45,25 @@
                         <a href="#!"><span class="white-text name" style="text-shadow: 1px 1px 5px black;">{$args.realname}</span></a>
                         <a href="#!"><span class="white-text email" style="text-shadow: 1px 1px 5px black;">{$args.email}</span></a>
                     </div></li>
-                <li id="nav-account"><a href="#!"><i class="material-icons">person</i>Account</a></li>
-                <li class="sub" id="nav-dashboard"><a href="dashboard.php">Dashboard</a></li>
-                <li class="sub" id="nav-logout"><a href="login.php?err=3">Logout</a></li>
+                <li id="nav-account"><a href="#!"><i class="mddi mddi-account-settings-variant"></i>Account</a></li>
+                <li id="nav-dashboard"><a href="dashboard.php"><i class="mddi mddi-view-dashboard"></i>Dashboard</a></li>
+                <li id="nav-logout"><a href="login.php?err=3"><i class="mddi mddi-logout-variant"></i>Logout</a></li>
                 <li><div class="divider"></div></li>
                 <li class="subheader"><a class="subheader indigo-text bolden">Seiten</a></li>
-                <li class="sub" id="nav-special"><a href="#!">Spezial</a></li>
-                <li class="sub" id="nav-article"><a href="articles.php">Artikel</a></li>
-                <li class="sub" id="nav-news"><a href="#!">News</a></li>
-                <li class="sub" id="nav-competition"><a href="#!">Wettkämpfe</a></li>
-                <li class="sub" id="nav-event"><a href="#!">Termine</a></li>
+                <li id="nav-special"><a href="#!"><i class="mddi mddi-star-circle"></i>Spezial</a></li>
+                <li id="nav-article"><a href="articles.php"><i class="mddi mddi-note-text"></i>Artikel</a></li>
+                <li id="nav-news"><a href="#!"><i class="mddi mddi-newspaper"></i>News</a></li>
+                <li id="nav-competition"><a href="#!"><i class="mddi mddi-seal"></i>Wettkämpfe</a></li>
+                <li id="nav-event"><a href="#!"><i class="mddi mddi-calendar"></i>Termine</a></li>
                 <li><div class="divider"></div></li>
                 <li><a class="subheader indigo-text bolden">Dateien</a></li>
-                <li class="sub" id="nav-files"><a href="#!">Dateien</a></li>
-                <li class="sub" id="nav-download"><a href="#!">Downloads</a></li>
-                <li class="sub" id="nav-pictures"><a href="#!">Bilder</a></li>
+                <li id="nav-files"><a href="#!"><i class="mddi mddi-file-tree"></i>Dateien</a></li>
+                <li id="nav-download"><a href="#!"><i class="mddi mddi-download"></i>Downloads</a></li>
+                <li id="nav-pictures"><a href="#!"><i class="mddi mddi-file-image"></i>Bilder</a></li>
                 <li><div class="divider"></div></li>
                 <li><a class="subheader indigo-text bolden">Administration</a></li>
-                <li class="sub" id="nav-database"><a href="../adminer/">Datenbank</a></li>
-                <li class="sub" id="nav-users"><a href="users.php">Benutzer</a></li>
+                <li id="nav-database"><a href="../adminer/"><i class="mddi mddi-database"></i>Datenbank</a></li>
+                <li id="nav-users"><a href="users.php"><i class="mddi mddi-account-multiple"></i>Benutzer</a></li>
                 <li><div class="divider"></div></li>
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
