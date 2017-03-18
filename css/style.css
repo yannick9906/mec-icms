@@ -76,25 +76,35 @@ header, main, footer {
 }
 
 /* label focus color */
-.input-field input[type=text]:focus + label {
-    color: #3f51b5;
-}
-.input-field input[type=password]:focus + label {
-    color: #3f51b5;
-}
-.input-field input[type=email]:focus + label {
+input:not([type]):focus:not([readonly]) + label,
+input[type=text]:focus:not([readonly]) + label,
+input[type=password]:focus:not([readonly]) + label,
+input[type=email]:focus:not([readonly]) + label,
+input[type=url]:focus:not([readonly]) + label,
+input[type=time]:focus:not([readonly]) + label,
+input[type=date]:focus:not([readonly]) + label,
+input[type=datetime]:focus:not([readonly]) + label,
+input[type=datetime-local]:focus:not([readonly]) + label,
+input[type=tel]:focus:not([readonly]) + label,
+input[type=number]:focus:not([readonly]) + label,
+input[type=search]:focus:not([readonly]) + label,
+textarea.materialize-textarea:focus:not([readonly]) + label {
     color: #3f51b5;
 }
 /* label underline focus color */
-.input-field input[type=text]:focus {
-    border-bottom: 1px solid #3f51b5;
-    box-shadow: 0 1px 0 0 #3f51b5;
-}
-.input-field input[type=password]:focus {
-    border-bottom: 1px solid #3f51b5;
-    box-shadow: 0 1px 0 0 #3f51b5;
-}
-.input-field input[type=email]:focus {
+input:not([type]):focus:not([readonly]),
+input[type=text]:focus:not([readonly]),
+input[type=password]:focus:not([readonly]),
+input[type=email]:focus:not([readonly]),
+input[type=url]:focus:not([readonly]),
+input[type=time]:focus:not([readonly]),
+input[type=date]:focus:not([readonly]),
+input[type=datetime]:focus:not([readonly]),
+input[type=datetime-local]:focus:not([readonly]),
+input[type=tel]:focus:not([readonly]),
+input[type=number]:focus:not([readonly]),
+input[type=search]:focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
     border-bottom: 1px solid #3f51b5;
     box-shadow: 0 1px 0 0 #3f51b5;
 }
@@ -133,4 +143,34 @@ header, main, footer {
 .placeholder-small.light {
     background-color: #e0e0e0;
     border-color: #e0e0e0;
+}
+
+.btn-flat.small {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.textstyles h1 {
+    font-size: 26px;
+    font-weight: bold;
+    font-family: 'Roboto Condensed';
+}
+
+.textstyles h2 {
+    font-size: 22px;
+    font-weight: normal;
+    font-family: 'Roboto Condensed';
+}
+
+.textstyles h3 {
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Roboto Condensed';
+}
+
+.textstyles hr {
+    height: 1px;
+    overflow: hidden;
+    background-color: #e0e0e0;
+    border: none;
 }

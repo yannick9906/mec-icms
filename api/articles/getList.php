@@ -18,5 +18,5 @@
     $user = \ICMS\Util::checkSession();
     $pdo = new \ICMS\PDO_MYSQL();
 
-    $users = \ICMS\Article::getList($_GET["page"], intval($_GET["pagesize"]), $_GET["search"], $_GET["sort"]);
+    $users = \ICMS\Article::getList($_GET["page"], intval($_GET["pagesize"]), utf8_decode($_GET["search"]), $_GET["sort"]);
     echo json_encode($users);

@@ -24,6 +24,8 @@
 <script type="text/javascript" src="../libs/jquery-2.2.1.min.js"></script>
 <script type="text/javascript" src="../libs/materialize/js/materialize.min.js"></script>
 <script type="text/javascript" src="../libs/handlebars.js"></script>
+<script type="text/javascript" src="../libs/field-selection.js"></script>
+<script type="text/javascript" src="../libs/marked.js"></script>
 <script type="text/javascript" src="../libs/md5.js"></script>
 
 
