@@ -90,6 +90,7 @@
             $stmt = $db->prepare("insert into `" . $table . "` set " . $bindString);
             $this->bindValues($stmt, $fields);
             $stmt->execute();
+            //var_dump($stmt->errorInfo());
             return $stmt->fetchObject();
         }
         /**

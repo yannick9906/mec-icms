@@ -5,6 +5,7 @@
             <div class="col s12 bolden indigo-text" style="margin-top: 15px;">
                 Artikel Meta-Daten
             </div>
+            <input type="hidden" id="edit-aID" value="{$article.id}"/>
             <div class="input-field col s12 m6">
                 <input id="edit-name" type="text" data-length="32767" value="{$article.name}">
                 <label for="edit-name">Interner Name</label>
@@ -14,14 +15,14 @@
                 <label for="edit-title">News Titel</label>
             </div>
             <div class="col s12 m4">
-                <select>
+                <select id="edit-state">
                     <option value="" disabled {if $article.state > 3 || $article.state < -1}selected{/if}>Sichtbarkeit wählen</option>
                     <option value="-1"{if $article.state == -1}selected{/if}>Gelöscht</option>
                     <option value="2" {if $article.state == 2}selected{/if}>Nicht öffentlich</option>
                     <option value="1" {if $article.state == 1}selected{/if}disabled>Warte auf Bestätigung</option>
                     <option value="0" {if $article.state == 0}selected{/if}>Öffentlich</option>
                 </select>
-                <label>Sichtbarkeit</label>
+                <label for="edit-state">Sichtbarkeit</label>
             </div>
             <div class="col s12 m8">
                 <a href="#!" class="btn blue right" onclick="save()">SPEICHERN</a>
@@ -46,7 +47,7 @@
                 <a class="small btn-flat waves-effect waves-light" href="#!" onclick="code()"><i class="mddi mddi-code-braces"></i></a>
                 <a class="small btn-flat disabled" href="#!" onclick="pic()"><i class="mddi mddi-image"></i></a>
                 <a class="small btn-flat disabled" href="#!" onclick="link()"><i class="mddi mddi-link"></i></a>
-                <a class="small btn-flat right" href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target_="_blank"><i class="mddi mddi-help"></i></a>
+                <a class="small btn-flat right" href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank"><i class="mddi mddi-help"></i></a>
             </div>
             <div class="input-field col s12">
                 <textarea id="edit-text" class="materialize-textarea" data-length="8388607" style="font-family: 'Roboto Mono'">{$article.text}</textarea>

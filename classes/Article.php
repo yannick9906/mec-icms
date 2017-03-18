@@ -159,7 +159,8 @@
             $pdo = new PDO_MYSQL();
             $startElem = ($page-1) * $pagesize;
             $endElem = $pagesize;
-            $stmt = $pdo->queryPagedList("icms_articles", $startElem, $endElem, ["name","title", "header"], $search, $ASORTING[$sort], "state >= 0");
+            if($search != "") $stmt = $pdo->queryMulti("SELECT * FROM (SELECT * FROM (SELECT * FROM icms_articles WHERE state >= 0 and concat(name,' ',title,' ',header) LIKE concat('%',:search,'%') ORDER BY aID, version desc) x GROUP BY aID) y ".$ASORTING[$sort]." LIMIT ".$startElem.",".$endElem, [":search" => $search]);
+            else $stmt = $pdo->queryMulti("SELECT * FROM (SELECT * FROM (SELECT * FROM icms_articles WHERE state >= 0 and concat(name,' ',title,' ',header) LIKE concat('%',:search,'%') ORDER BY aID, version desc) x GROUP BY aID) y ".$ASORTING[$sort]." LIMIT ".$startElem.",".$endElem, [":search" => $search]);
             $hits = self::getListMeta($page, $pagesize, $search);
             while($row = $stmt->fetchObject()) {
                 array_push($hits["articles"], [
@@ -230,6 +231,39 @@
                 "page" => $page,
                 "articles" => []
             ];
+        }
+
+        /**
+         * Saves changes in fields (name, title, header, state, text) and creates a new Entry
+         *
+         * @param $user User
+         * @return bool
+         */
+        public function saveAsNewVersion($user) {
+            $res = $this->pdo->query("SELECT MAX(version) as version FROM icms_articles WHERE aID = :aID", [":aID" => $this->aID]);
+            $authorID     = $this->authorID;
+            $lastEditID   = $user->getUID();
+            $lastEditDate = date("Y-m-d H:i:s");
+            $aID          = $this->aID;
+            $version      = $res->version + 1;
+            $name         = utf8_encode($this->name);
+            $text         = utf8_encode($this->text);
+            $header       = utf8_encode($this->header);
+            $title        = utf8_encode($this->title);
+            $state        = $this->state;
+            $this->pdo->queryInsert("icms_articles",
+                [
+                   "aID" => $aID,
+                   "authorID" => $authorID,
+                   "name" => $name,
+                   "title" => $title,
+                   "header" => $header,
+                   "text" => $text,
+                   "lastAuthorID" => $lastEditID,
+                   "lastEditDate" => $lastEditDate,
+                   "version" => $version,
+                   "state" => $state
+                ]);
         }
 
         /**

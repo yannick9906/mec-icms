@@ -1,4 +1,4 @@
-<footer class="page-footer blue">
+<footer class="page-footer blue" style="position: fixed; z-index: 50; bottom: 0;">
     <div class="footer-copyright">
         <div class="container">
             ©2014-2017 Yannick Félix

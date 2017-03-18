@@ -9,7 +9,24 @@ function updatePreview() {
 }
 
 function save() {
-    window.location = "articles.php";
+    let data = {
+        aID: $("#edit-aID").val(),
+        name: $("#edit-name").val(),
+        title: $("#edit-title").val(),
+        state: $("#edit-state").val(),
+        header: $("#edit-header").val(),
+        text: $("#edit-text").val()
+    };
+
+    $.post("../api/articles/update.php", data, function(json) {
+       json = JSON.parse(json);
+       if(json.success == true) {
+           window.location = "articles.php";
+       } else {
+           Materialize.toast("Es ist ein Fehler aufgetreten", 2000, "red");
+       }
+    });
+
 }
 
 function cancel() {

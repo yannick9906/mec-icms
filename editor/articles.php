@@ -25,7 +25,7 @@
         echo $dwoo->get("tpl/articles.tpl", $pgdata);
     } else {
         $pgdata = \ICMS\Util::getEditorPageDataStub("Artikel bearbeiten", $user, "article");
-        $article = \ICMS\Article::fromAID(intval($_GET["edit"]));
+        $article = \ICMS\Article::fromVID(intval($_GET["edit"]));
         $pgdata['article'] = $article->jsonSerialize();
         echo $dwoo->get("tpl/articleEdit.tpl", $pgdata);
     }
