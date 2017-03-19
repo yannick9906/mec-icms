@@ -53,7 +53,7 @@
             </a>
         </div>
     </div>
-    <div class="container" id="newUserForm" style="display: none;">
+    <div class="container" id="newAricleForm" style="display: none;">
         <div class="card-panel">
             <div class="row">
                 <div class="col s12 bolden indigo-text">
@@ -62,62 +62,17 @@
                 <form class="col s12">
                     <div class="row">
                         <div class="input-field col s6">
-                            <input id="new-username" type="text">
-                            <label for="new-username">Benutzername</label>
+                            <input id="new-name" type="text">
+                            <label for="new-name">Interner Name</label>
                         </div>
                         <div class="input-field col s6">
-                            <input id="new-realname" type="text">
-                            <label for="new-realname">Voller Name</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s6">
-                            <input id="new-password" type="password" class="validate">
-                            <label for="new-password">Passwort</label>
-                        </div>
-                        <div class="input-field col s6">
-                            <input id="new-email" type="email" class="validate">
-                            <label for="new-email">Email</label>
+                            <input id="new-title" type="text">
+                            <label for="new-title">Titel</label>
                         </div>
                     </div>
                 </form>
                 <div class="col s12">
-                    <a class="waves-effect waves-light btn indigo right" onclick="submitNewUser();">erstellen</a>
-                    <a class="waves-effect waves-red btn-flat right" onclick="backToList();">abbrechen</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container" id="editUserForm" style="display: none;">
-        <div class="card-panel">
-            <div class="row">
-                <div class="col s12 bolden indigo-text">
-                    Benutzer bearbeiten
-                </div>
-                <form class="col s12">
-                    <div class="row">
-                        <div class="input-field col s6">
-                            <input id="edit-username" type="text" disabled>
-                            <label for="edit-username">Benutzername</label>
-                        </div>
-                        <div class="input-field col s6">
-                            <input id="edit-realname" type="text">
-                            <label for="edit-realname">Voller Name</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s6">
-                            <input id="edit-password" type="password" class="validate">
-                            <label for="edit-password">Passwort</label>
-                        </div>
-                        <div class="input-field col s6">
-                            <input id="edit-email" type="email" class="validate">
-                            <label for="edit-email">Email</label>
-                        </div>
-                    </div>
-                </form>
-                <div class="col s12">
-                    <a class="waves-effect waves-light btn indigo right" onclick="submitEditUser();">speichern</a>
+                    <a class="waves-effect waves-light btn indigo right" onclick="submitNewArticle();">erstellen</a>
                     <a class="waves-effect waves-red btn-flat right" onclick="backToList();">abbrechen</a>
                 </div>
             </div>

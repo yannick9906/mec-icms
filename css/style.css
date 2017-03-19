@@ -117,6 +117,10 @@ textarea.materialize-textarea:focus:not([readonly]) {
     padding-left: 57px;
 }
 
+.anim {
+    transition: position 1s ease-out;
+}
+
 .placeholder-big {
     display: inline-block;
     background-color: #bdbdbd;

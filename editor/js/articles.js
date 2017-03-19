@@ -15,9 +15,11 @@ let listElemTmplt = `
         <td><b>{{name}}</b><br/>erstellt von {{authorReal}}</td>
         <td>Version {{version}} <i class="{{{stateCSS}}}"></i> <span class="{{{color}}}">{{stateText}}</span><br/>von {{lastEditAuthor}} - {{lastEdit}}</td>
         <td>
-        <a onclick="delete({{id}})" href="#!" style="padding-left:10px;padding-right:10px;" class="btn-flat right red-text tooltipped" data-position="top" data-delay="50" data-tooltip="Löschen"><i class="mddi mddi-delete"></i></a>
-        <a onclick="history({{id}})" href="#!" style="padding-left:10px;padding-right:10px;" class="btn-flat right tooltipped" data-position="top" data-delay="50" data-tooltip="Versionsverlauf"><i class="mddi mddi-history"></i></a>
-        <a href="articles.php?edit={{vId}}" style="padding-left:10px;padding-right:10px;" class="btn-flat right tooltipped" data-position="top" data-delay="50" data-tooltip="Bearbeiten"><i class="mddi mddi-pencil"></i></a>
+        <a id="del{{id}}" onclick="del({{id}})" href="#!" style="padding-left:10px;padding-right:10px;" class="btn-flat right red-text tooltipped anim" data-position="top" data-delay="50" data-tooltip="Löschen"><i class="mddi mddi-delete"></i></a>
+        <a id="denydel{{id}}" onclick="denydelete({{id}})" href="#!" style="padding-left:10px;padding-right:10px;display:none;" class="btn-flat right red-text tooltipped anim"><i class="mddi mddi-close"></i></a>
+        <a id="confdel{{id}}" onclick="confdelete({{id}})" href="#!" style="padding-left:10px;padding-right:10px;display:none;" class="btn-flat right green-text tooltipped anim"><i class="mddi mddi-check"></i></a>
+        <a onclick="history({{id}})" href="#!" style="padding-left:10px;padding-right:10px;" class="btn-flat right tooltipped anim" data-position="top" data-delay="50" data-tooltip="Versionsverlauf"><i class="mddi mddi-history"></i></a>
+        <a href="articles.php?edit={{vId}}" style="padding-left:10px;padding-right:10px;" class="btn-flat right tooltipped anim" data-position="top" data-delay="50" data-tooltip="Bearbeiten"><i class="mddi mddi-pencil"></i></a>
         </td>
     </tr>
     `;
@@ -112,47 +114,65 @@ function updateCaller() {
 
 ///////////////////////////////////////
 function backToList() {
-    $("#editUserForm").fadeOut(200, function() {
-        $("#userList").fadeIn(200);
+    $("#newAricleForm").fadeOut(200, function() {
+        $("#articleList").fadeIn(200);
     });
-    $("#newUserForm").fadeOut(200);
     currEdit = -1;
 }
 
 function newArticle() {
-    $("#new-username").removeClass("invalid");
-    $("#new-username").val("");
-    $("#new-realname").val("");
-    $("#new-password").val("");
-    $("#new-email").val("");
-    $("#userList").fadeOut(200, function() {
-        $("#newUserForm").fadeIn(200);
+    $("#new-name").val("");
+    $("#new-title").val("");
+    $("#articleList").fadeOut(200, function() {
+        $("#newAricleForm").fadeIn(200);
     });
 }
 
 function submitNewArticle() {
     data = {
-        username: $("#new-username").val(),
-        realname: $("#new-realname").val(),
-        passhash: md5($("#new-password").val()),
-        email: $("#new-email").val()
+        name: $("#new-name").val(),
+        title: $("#new-title").val(),
     };
-    $.post("../api/users/create.php", data, function(response) {
+    $.post("../api/articles/create.php", data, function(response) {
         let json = JSON.parse(response);
-        if(json.success == "1") {
-            Materialize.toast("Benutzer erstellt", 2000, "green");
+        if(json.success == true) {
+            Materialize.toast("Artikel erstellt", 1000, "green");
             backToList();
         } else {
-            if(json.error == "missing fields") {
-                Materialize.toast("Bitte alle Felder ausfüllen", 2000, "red");
-            } else if(json.error == "username exists") {
-                Materialize.toast("Der Benutzername existiert bereits", 2000, "red");
-                $("#new-username").addClass("invalid");
-            }
+            Materialize.toast("Es ist ein Fehler aufgetreten", 2000, "red");
         }
     });
 }
 
+function del(id) {
+    $("#del"+id).hide();
+    $("#confdel"+id).show();
+    $("#denydel"+id).show();
+}
+
+function confdelete(id) {
+    $("#del"+id).show();
+    $("#confdel"+id).hide();
+    $("#denydel"+id).hide();
+    let data = {
+        aID: id
+    };
+    $.getJSON("../api/articles/delete.php", data, function(json) {
+        if(json.success == true) {
+            Materialize.toast("Artikel gelöscht", 1000, "green");
+        } else {
+            Materialize.toast("Es ist ein Fehler aufgetreten", 2000, "red");
+        }
+        updateData();
+        updatePages();
+    });
+}
+
+function denydelete(id) {
+    $("#del"+id).show();
+    $("#confdel"+id).hide();
+    $("#denydel"+id).hide();
+}
 ///////////////////////////////////////
 
 var delay = (function(){

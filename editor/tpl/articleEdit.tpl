@@ -19,7 +19,7 @@
                     <option value="" disabled {if $article.state > 3 || $article.state < -1}selected{/if}>Sichtbarkeit wählen</option>
                     <option value="-1"{if $article.state == -1}selected{/if}>Gelöscht</option>
                     <option value="2" {if $article.state == 2}selected{/if}>Nicht öffentlich</option>
-                    <option value="1" {if $article.state == 1}selected{/if}disabled>Warte auf Bestätigung</option>
+                    <option value="1" {if $article.state == 1}selected{/if} disabled>Warte auf Bestätigung</option>
                     <option value="0" {if $article.state == 0}selected{/if}>Öffentlich</option>
                 </select>
                 <label for="edit-state">Sichtbarkeit</label>
@@ -89,4 +89,5 @@
     });
 </script>
 <script src="js/articleEdit.js"></script>
+<script src="js/markdownEdit.js"></script>
 {include file="end.tpl"}
