@@ -160,7 +160,7 @@
             $startElem = ($page-1) * $pagesize;
             $endElem = $pagesize;
             if($search != "") $stmt = $pdo->queryMulti("SELECT * FROM (SELECT * FROM (SELECT * FROM icms_articles WHERE concat(name,' ',title,' ',header) LIKE concat('%',:search,'%') ORDER BY aID, version desc) x GROUP BY aID) y where state >= 0".$ASORTING[$sort]." LIMIT ".$startElem.",".$endElem, [":search" => $search]);
-            else $stmt = $pdo->queryMulti("SELECT * FROM (SELECT * FROM (SELECT * FROM icms_articles WHERE concat(name,' ',title,' ',header) LIKE concat('%',:search,'%') ORDER BY aID, version desc) x GROUP BY aID) y where state >= 0".$ASORTING[$sort]." LIMIT ".$startElem.",".$endElem, [":search" => $search]);
+            else $stmt = $pdo->queryMulti("SELECT * FROM (SELECT * FROM (SELECT * FROM icms_articles ORDER BY aID, version desc) x GROUP BY aID) y where state >= 0".$ASORTING[$sort]." LIMIT ".$startElem.",".$endElem, []);
             $hits = self::getListMeta($page, $pagesize, $search);
             while($row = $stmt->fetchObject()) {
                 array_push($hits["articles"], [
@@ -211,6 +211,7 @@
             }
             return $hits;
         }
+
         /**
          * Returns the array stub for the getLists() method
          *
@@ -221,8 +222,8 @@
          */
         public static function getListMeta(int $page, int $pagesize, string $search): array {
             $pdo = new PDO_MYSQL();
-            if($search != "") $res = $pdo->query("select count(*) as size from icms_articles where lower(concat(name,' ',title,' ',header)) like lower(:search)", [":search" => "%".$search."%"]);
-            else $res = $pdo->query("select count(*) as size from icms_user");
+            if($search != "") $res = $pdo->query("SELECT count(*) as size FROM (SELECT * FROM (SELECT * FROM icms_articles WHERE concat(name,' ',title,' ',header) LIKE concat('%',:search,'%') ORDER BY aID, version desc) x GROUP BY aID) y where state >= 0", [":search" => "%".$search."%"]);
+            else $res = $pdo->query("SELECT count(*) as size FROM (SELECT * FROM (SELECT * FROM icms_articles ORDER BY aID, version desc) x GROUP BY aID) y where state >= 0");
             $size = $res->size;
             $maxpage = ceil($size / $pagesize);
             return [
