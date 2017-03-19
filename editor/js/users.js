@@ -10,7 +10,7 @@ let pagesize = 12;
 ///////////////////////////////////////////////////////////////////////
 // TODO Fill List Template and update() method
 let listElemTmplt = `
-    <tr id="row-{{i}}" style="display: none;" onclick="editUser({{id}})">
+    <tr id="row-{{i}}" style="display: none;" onclick="editUser({{id}})" class="clickable">
         <td>{{id}}</td>
         <td>{{name}} <span class="grey-text">[{{usrname}}]</span></td>
         <td>{{email}}</td>

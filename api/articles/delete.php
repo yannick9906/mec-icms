@@ -22,5 +22,5 @@
 
     $article = \ICMS\Article::fromAID($aID);
     $article->delete();
-
+    //TODO checks if used anywhere else
     echo json_encode(["success" => true]);

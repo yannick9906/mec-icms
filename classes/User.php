@@ -118,7 +118,7 @@
             $pdo = new PDO_MYSQL();
             $startElem = ($page-1) * $pagesize;
             $endElem = $pagesize;
-            $stmt = $pdo->queryPagedList("icms_user", $startElem, $endElem, ["username","realname"], $search, $USORTING[$sort]);
+            $stmt = $pdo->queryPagedList("icms_user", $startElem, $endElem, ["username","realname"], $search, $USORTING[$sort], "uID >= 0");
             $hits = self::getListMeta($page, $pagesize, $search);
             while($row = $stmt->fetchObject()) {
                 array_push($hits["users"], [
@@ -145,7 +145,7 @@
             $pdo = new PDO_MYSQL();
             $startElem = ($page-1) * $pagesize;
             $endElem = $pagesize;
-            $stmt = $pdo->queryPagedList("icms_user", $startElem, $endElem, ["username","realname"], $search);
+            $stmt = $pdo->queryPagedList("icms_user", $startElem, $endElem, ["username","realname"], $search, "", "uID >= 0");
             $hits = [];
             while($row = $stmt->fetchObject()) {
                 array_push($hits, new User(
@@ -168,8 +168,8 @@
          */
         public static function getListMeta($page, $pagesize, $search) {
             $pdo = new PDO_MYSQL();
-            if($search != "") $res = $pdo->query("select count(*) as size from icms_user where lower(concat(username,' ',realname)) like lower(:search)", [":search" => "%".$search."%"]);
-            else $res = $pdo->query("select count(*) as size from icms_user");
+            if($search != "") $res = $pdo->query("select count(*) as size from icms_user where lower(concat(username,' ',realname)) like lower(:search) and uID >= 0", [":search" => "%".$search."%"]);
+            else $res = $pdo->query("select count(*) as size from icms_user where uID >= 0");
             $size = $res->size;
             $maxpage = ceil($size / $pagesize);
             return [
