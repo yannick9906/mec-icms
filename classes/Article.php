@@ -159,8 +159,8 @@
             $pdo = new PDO_MYSQL();
             $startElem = ($page-1) * $pagesize;
             $endElem = $pagesize;
-            if($search != "") $stmt = $pdo->queryMulti("SELECT * FROM (SELECT * FROM (SELECT * FROM icms_articles WHERE concat(name,' ',title,' ',header) LIKE concat('%',:search,'%') ORDER BY aID, version desc) x GROUP BY aID) y where state >= 0".$ASORTING[$sort]." LIMIT ".$startElem.",".$endElem, [":search" => $search]);
-            else $stmt = $pdo->queryMulti("SELECT * FROM (SELECT * FROM (SELECT * FROM icms_articles ORDER BY aID, version desc) x GROUP BY aID) y where state >= 0".$ASORTING[$sort]." LIMIT ".$startElem.",".$endElem, []);
+            if($search != "") $stmt = $pdo->queryMulti("SELECT * FROM icms_articles s1 WHERE version=(SELECT MAX(s2.version) FROM icms_articles s2 WHERE s1.aID = s2.aID) and state >= 0 and concat(name,' ',title,' ',header) LIKE concat('%',:search,'%') ".$ASORTING[$sort]." LIMIT ".$endElem." OFFSET ".$startElem, [":search" => $search]);
+            else $stmt = $pdo->queryMulti("SELECT * FROM icms_articles s1 WHERE version=(SELECT MAX(s2.version) FROM icms_articles s2 WHERE s1.aID = s2.aID) and state >= 0 LIMIT ".$endElem." OFFSET ".$startElem, []);
             $hits = self::getListMeta($page, $pagesize, $search);
             while($row = $stmt->fetchObject()) {
                 array_push($hits["articles"], [
@@ -279,9 +279,6 @@
             $lastEditDate = date("Y-m-d H:i:s");
             $res = $pdo->query("SELECT MAX(aID) as aID FROM icms_articles");
             $aID = $res->aID + 1;
-            $pdo->query("INSERT INTO icms_articles(nID, date, title, text, link, authorID, lastEditID, lastEditDate, version, state)"
-                ."VALUES (:nid, :date, :title, :text, :link, :authorID, :lastEditID, :lastEditDate, 1, 1)",
-                [":nid" => $nID, ":date" => $date, ":title" => $title, ":text" => $text, ":link" => $link, ":authorID" => $authorID, ":lastEditID" => $lastEditID, ":lastEditDate" => $lastEditDate]);
             $pdo->queryInsert("icms_articles",
                 [
                     "aID" => $aID,

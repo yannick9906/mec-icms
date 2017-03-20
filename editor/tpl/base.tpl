@@ -11,6 +11,7 @@
     <link type="text/css" rel="stylesheet" href="../libs/materialize/css/materialize.css"  media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="../css/style.css" />
     <link type="text/css" rel="stylesheet" href="../css/materialdesignicons.min.css" media="all"/>
+    <link type="text/css" rel="stylesheet" href="../libs/datetimepicker/bootstrap-material-datetimepicker.css"/>
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -27,6 +28,8 @@
 <script type="text/javascript" src="../libs/field-selection.js"></script>
 <script type="text/javascript" src="../libs/marked.js"></script>
 <script type="text/javascript" src="../libs/md5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js"></script>
+<script src="../libs/datetimepicker/bootstrap-material-datetimepicker.js" charset="utf-8"></script>
 
 
 <!-- Dropdown Structure -->
@@ -56,7 +59,7 @@
                 <li id="nav-article"><a href="articles.php"><i class="mddi mddi-note-text"></i>Artikel</a></li>
                 <li id="nav-news"><a href="#!"><i class="mddi mddi-newspaper"></i>News</a></li>
                 <li id="nav-competition"><a href="#!"><i class="mddi mddi-seal"></i>Wettkämpfe</a></li>
-                <li id="nav-event"><a href="#!"><i class="mddi mddi-calendar"></i>Termine</a></li>
+                <li id="nav-calendar"><a href="calendar.php"><i class="mddi mddi-calendar"></i>Termine</a></li>
                 <li><div class="divider"></div></li>
                 <li><a class="subheader indigo-text bolden">Dateien</a></li>
                 <li id="nav-files"><a href="#!"><i class="mddi mddi-file-tree"></i>Dateien</a></li>

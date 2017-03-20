@@ -84,7 +84,7 @@
          * @return string
          */
         public static function dbDateToReadableWithTime($timestamp) {
-            return date("d. M Y - H:i", $timestamp);
+            return date("d. M Y H:i", $timestamp);
         }
 
         /**

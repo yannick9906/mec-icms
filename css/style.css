@@ -178,3 +178,8 @@ textarea.materialize-textarea:focus:not([readonly]) {
     background-color: #e0e0e0;
     border: none;
 }
+
+.textstyles blockquote {
+    border-left-color: #2196F3;
+    background-color: rgba(33, 150, 243, 0.05);
+}
