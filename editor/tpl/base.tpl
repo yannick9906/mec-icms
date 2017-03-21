@@ -63,8 +63,8 @@
                 <li><div class="divider"></div></li>
                 <li><a class="subheader indigo-text bolden">Dateien</a></li>
                 <li id="nav-files"><a href="files.php"><i class="mddi mddi-file-tree"></i>Dateien</a></li>
-                <li id="nav-download"><a href="#!"><i class="mddi mddi-download"></i>Downloads</a></li>
-                <li id="nav-pictures"><a href="#!"><i class="mddi mddi-file-image"></i>Bilder</a></li>
+                <li id="nav-downloads"><a href="downloads.php"><i class="mddi mddi-download"></i>Downloads</a></li>
+                <li id="nav-pictures"><a href="pictures.php"><i class="mddi mddi-file-image"></i>Bilder</a></li>
                 <li><div class="divider"></div></li>
                 <li><a class="subheader indigo-text bolden">Administration</a></li>
                 <li id="nav-database"><a href="../adminer/"><i class="mddi mddi-database"></i>Datenbank</a></li>
