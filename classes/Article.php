@@ -135,6 +135,16 @@
             ];
         }
 
+        function minArray(): array {
+            return [
+                "id" => $this->aID,
+                "vId" => $this->vID,
+                "name" => $this->name,
+                "author" =>  User::fromUID($this->authorID)->getUName(),
+                "authorReal" => User::fromUID($this->authorID)->getURealname()
+            ];
+        }
+
         /**
          * Returns all entries matching the search and the page
          *

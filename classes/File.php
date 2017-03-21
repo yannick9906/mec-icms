@@ -9,7 +9,7 @@
     namespace ICMS;
 
 
-    class File {
+    class File implements \JsonSerializable {
         private $fID, $fileName, $filePath;
         private $authorID, $dateUploaded;
         private $pdo;
@@ -69,10 +69,10 @@
             $stmt = $pdo->queryPagedList("icms_files", $startElem, $endElem, ["fileName","dateUploaded"], $search, $USORTING[$sort], "fID >= 0");
             $hits = self::getListMeta($page, $pagesize, $search);
             while($row = $stmt->fetchObject()) {
-                $filePath = utf8_encode($row->filePath);
+                $filePath = utf8_decode($row->filePath);
                 array_push($hits["files"], [
                     "id" => $row->fID,
-                    "fileName" => utf8_encode($row->fileName),
+                    "fileName" => utf8_decode($row->fileName),
                     "filePath" => (strlen($filePath) > 56) ? substr($filePath,0,53).'...' : $filePath,
                     "uploaded" => Util::dbDateToReadableWithTime(strtotime($row->dateUploaded)),
                     "author" => User::fromUID($row->authorID)->getURealname(),
@@ -95,15 +95,15 @@
             $pdo = new PDO_MYSQL();
             $startElem = ($page-1) * $pagesize;
             $endElem = $pagesize;
-            $stmt = $pdo->queryPagedList("icms_user", $startElem, $endElem, ["username","realname"], $search, "", "uID >= 0");
+            $stmt = $pdo->queryPagedList("icms_files", $startElem, $endElem, ["fileName","dateUploaded"], $search, "", "fID >= 0");
             $hits = [];
             while($row = $stmt->fetchObject()) {
-                array_push($hits, new User(
-                        $row->uID,
-                        $row->username,
-                        $row->realname,
-                        $row->passHash,
-                        $row->email)
+                array_push($hits, new File(
+                        $row->fID,
+                        $row->filename,
+                        $row->filePath,
+                        $row->authorID,
+                        $row->dateUploaded)
                 );
             }
             return $hits;
@@ -226,5 +226,22 @@
          */
         public function getDateUploaded(): int {
             return $this->dateUploaded;
+        }
+
+        /**
+         * Specify data which should be serialized to JSON
+         *
+         * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+         * @return mixed data which can be serialized by <b>json_encode</b>,
+         *        which is a value of any type other than a resource.
+         * @since 5.4.0
+         */
+        function jsonSerialize() {
+            return [
+                "id" => $this->fID,
+                "name" => $this->fileName,
+                "path" => $this->filePath,
+                "authorReal" => User::fromUID($this->authorID)->getURealname()
+            ];
         }
     }
