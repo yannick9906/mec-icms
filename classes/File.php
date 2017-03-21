@@ -132,7 +132,7 @@
         }
 
         /**
-         * Deletes a user
+         * Deletes a file from database and renames it on drive with leading __
          *
          * @return bool
          */

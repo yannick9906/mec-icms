@@ -22,4 +22,5 @@
 
     $file = \ICMS\File::fromFID($fID);
     echo $file->delete() ? json_encode(["success" => true]) : json_encode(["success" => false]);
-    //TODO checks if used anywhere else
+
+    //Deleting a file results in deleting any Download associated w/ it
