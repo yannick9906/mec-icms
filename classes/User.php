@@ -8,15 +8,7 @@
 
     namespace ICMS;
 
-    /*const USORTING = [
-        "ascName"  => " ORDER BY username ASC",
-        "ascID"    => " ORDER BY uID ASC",
-        "descName" => " ORDER BY username DESC",
-        "descID"   => " ORDER BY uID DESC",
-        "" => ""
-    ];*/
-
-    class User {
+    class User implements \JsonSerializable {
         private $pdo, $uID, $uName, $uRealname, $uPassHash, $uEmail;
 
         /**
@@ -28,7 +20,7 @@
          * @param string $uPassHash
          * @param string $uEmail
          */
-        public function __construct($uID, $uName, $uRealname, $uPassHash, $uEmail) {
+        public function __construct(int $uID, string $uName, string $uRealname, string $uPassHash, string $uEmail) {
             $this->uID = $uID;
             $this->uName = utf8_encode($uName);
             $this->uRealname = utf8_encode($uRealname);
@@ -36,13 +28,14 @@
             $this->uEmail = $uEmail;
             $this->pdo = new PDO_MYSQL();
         }
+
         /**
          * Creates a new User Object from a give user ID
          *
-         * @param $uID int User ID
+         * @param int $uID
          * @return User
          */
-        public static function fromUID($uID) {
+        public static function fromUID(int $uID): User {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM icms_user WHERE uID = :uid", [":uid" => $uID]);
             return new User($res->uID, $res->username, $res->realname, $res->passhash, $res->email);
@@ -51,46 +44,35 @@
         /**
          * Creates a new User Object from a give username
          *
-         * @param $uName string Username
+         * @param string $uName
          * @return User
          */
-        public static function fromUName($uName) {
+        public static function fromUName(string $uName): User {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM icms_user WHERE username = :uname", [":uname" => $uName]);
             return new User($res->uID, $res->username, $res->realname, $res->passhash, $res->email);
         }
-        /**
-         * Makes this class as an array to use for tables etc.
-         *
-         * @return array
-         */
-        public function asArray() {
-            return [
-                "uID" => $this->uID,
-                "username" => $this->uName,
-                "realname" => $this->uRealname,
-                "email" => $this->uEmail
-            ];
-        }
+
         /**
          * Makes this class as an string to use for debug only
          *
          * @return string
          */
-        public function toString() {
+        public function __toString(): string {
             return
                 "id:        ".$this->uID."\n".
                 "usrname:   ".$this->uName."\n".
                 "realname:  ".$this->uRealname."\n".
                 "email:     ".$this->uEmail."\n";
         }
+
         /**
          * checks if a username is in the user db
          *
-         * @param $uName string Username
+         * @param string $uName
          * @return bool
          */
-        public static function doesUserNameExist($uName) {
+        public static function doesUserNameExist(string $uName): bool {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM icms_user WHERE username = :uname", [":uname" => $uName]);
             return isset($res->uID);
@@ -106,7 +88,7 @@
          *
          * @return array Normal dict array with data
          */
-        public static function getList($page = 1, $pagesize = 75, $search = "", $sort = "") {
+        public static function getList(int $page = 1, int $pagesize = 75, string $search = "", string $sort = ""): array {
             $USORTING = [
                 "nameAsc"  => "ORDER BY username ASC",
                 "idAsc"    => "ORDER BY uID ASC",
@@ -131,6 +113,7 @@
             }
             return $hits;
         }
+
         /**
          * @see getList()
          * but you'll get Objects instead of an array
@@ -141,7 +124,7 @@
          *
          * @return User[]
          */
-        public static function getListObjects($page, $pagesize, $search) {
+        public static function getListObjects(int $page = 1, int $pagesize = 9999999, string $search = "") {
             $pdo = new PDO_MYSQL();
             $startElem = ($page-1) * $pagesize;
             $endElem = $pagesize;
@@ -158,17 +141,18 @@
             }
             return $hits;
         }
+
         /**
-         * Returns the array stub for the getLists() method
+         * Returns the array stub for the getList() methods
          *
          * @param int $page
          * @param int $pagesize
          * @param string $search
          * @return array
          */
-        public static function getListMeta($page, $pagesize, $search) {
+        public static function getListMeta(int $page, int $pagesize, string $search): array {
             $pdo = new PDO_MYSQL();
-            if($search != "") $res = $pdo->query("select count(*) as size from icms_user where lower(concat(username,' ',realname)) like lower(:search) and uID >= 0", [":search" => "%".$search."%"]);
+            if($search != "") $res = $pdo->query("select count(*) as size from icms_user where lower(concat(username,' ',realname)) like lower(concat('%',:search,'%')) and uID >= 0", [":search" => $search]);
             else $res = $pdo->query("select count(*) as size from icms_user where uID >= 0");
             $size = $res->size;
             $maxpage = ceil($size / $pagesize);
@@ -179,6 +163,7 @@
                 "users" => []
             ];
         }
+
         /**
          * Deletes a user
          *
@@ -187,6 +172,7 @@
         public function delete() {
             return $this->pdo->query("DELETE FROM icms_user WHERE uID = :uid", [":uid" => $this->uID]);
         }
+
         /**
          * Saves the Changes made to this object to the db
          */
@@ -204,12 +190,12 @@
         /**
          * Creates a new user from the give attribs
          *
-         * @param $username   string Username
-         * @param $realname   string Realname of the user
-         * @param $passwdhash string md5 Hash of Password
-         * @param $email
+         * @param string $username
+         * @param string $realname
+         * @param string $passwdhash
+         * @param string $email
          */
-        public static function createUser($username, $realname, $passwdhash, $email) {
+        public static function createUser(string $username, string $realname, string $passwdhash, string $email) {
             $pdo = new PDO_MYSQL();
             $pdo->queryInsert("icms_user",
                 ["username" => utf8_decode($username),
@@ -222,10 +208,10 @@
         /**
          * Checks if the user is permitted to do sth.
          *
-         * @param $permission String for Permission
+         * @param string $permission
          * @return bool
          */
-        public function isActionAllowed($permission) {
+        public function isActionAllowed(string $permission): bool {
             if($this->uPrefix != 27) {
                 $pdo = new PDO_MYSQL();
                 $res = $pdo->query("SELECT * FROM icms_user-rights WHERE uID = :uid AND `key` = :key", [":uid" => $this->uID, ":key" => $permission]);
@@ -237,10 +223,10 @@
         /**
          * Tests if a permission action key is already present in the DB
          *
-         * @param $permission string
+         * @param string $permission
          * @return bool
          */
-        public function isActionInDB($permission) {
+        public function isActionInDB(string $permission): bool {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM icms_user-rights WHERE uID = :uid AND `key` = :key", [":uid" => $this->uID, ":key" => $permission]);
             return isset($res->value);
@@ -249,10 +235,10 @@
         /**
          * Updates a value for a specific action key or creates a new entry in the DB
          *
-         * @param $actionKey string
-         * @param $state int
+         * @param string $actionKey
+         * @param int    $state
          */
-        public function setPermission($actionKey, $state) {
+        public function setPermission(string $actionKey, int $state) {
             $pdo = new PDO_MYSQL();
             if($this->isActionInDB($actionKey))
                 $pdo->query("UPDATE icms_user-rights SET `value` = :state WHERE uID = :uid and `key` = :key", [":uid" => $this->uID, ":key" => $actionKey, ":state" => $state]);
@@ -265,10 +251,10 @@
          *
          * @return array
          */
-        public function getPermAsArray() {
+        public function getPermAsArray(): array {
             $array = [];
             $pdo = new PDO_MYSQL();
-            $stmt = $pdo->queryMulti("SELECT * FROM entrance_user_rights WHERE uID = :uid", [":uid" => $this->uID]);
+            $stmt = $pdo->queryMulti("SELECT * FROM icms_user-rights WHERE uID = :uid", [":uid" => $this->uID]);
             while($row = $stmt->fetchObject()) {
                 $array[str_replace(".", "_", $row->permission)] = (int) $this->isActionAllowed($row->permission);
             }
@@ -278,66 +264,89 @@
         /**
          * @return int
          */
-        public function getUID() {
+        public function getUID(): int {
             return $this->uID;
-        }
-        /**
-         * @param int $uID
-         */
-        public function setUID($uID) {
-            $this->uID = $uID;
-        }
-        /**
-         * @return string
-         */
-        public function getUName() {
-            return $this->uName;
-        }
-        /**
-         * @param string $uName
-         */
-        public function setUName($uName) {
-            $this->uName = $uName;
-        }
-        /**
-         * @return string
-         */
-        public function getURealname() {
-            return $this->uRealname;
-        }
-        /**
-         * @param string $uRealname
-         */
-        public function setURealname($uRealname) {
-            $this->uRealname = $uRealname;
-        }
-        /**
-         * @return string
-         */
-        public function getUPassHash() {
-            return $this->uPassHash;
-        }
-        /**
-         * @param string $uPassHash
-         */
-        public function setUPassHash($uPassHash) {
-            $this->uPassHash = $uPassHash;
-        }
-        public function comparePassHash($passHash) {
-            return $this->uPassHash == $passHash;
         }
 
         /**
          * @return string
          */
-        public function getUEmail() {
+        public function getUName(): string {
+            return $this->uName;
+        }
+
+        /**
+         * @param string $uName
+         */
+        public function setUName(string $uName) {
+            $this->uName = $uName;
+        }
+
+        /**
+         * @return string
+         */
+        public function getURealname(): string {
+            return $this->uRealname;
+        }
+
+        /**
+         * @param string $uRealname
+         */
+        public function setURealname(string $uRealname) {
+            $this->uRealname = $uRealname;
+        }
+
+        /**
+         * @return string
+         */
+        public function getUPassHash(): string {
+            return $this->uPassHash;
+        }
+
+        /**
+         * @param string $uPassHash
+         */
+        public function setUPassHash(string $uPassHash) {
+            $this->uPassHash = $uPassHash;
+        }
+
+        /**
+         * @return string
+         */
+        public function getUEmail(): string {
             return $this->uEmail;
         }
 
         /**
          * @param string $uEmail
          */
-        public function setUEmail($uEmail) {
+        public function setUEmail(string $uEmail) {
             $this->uEmail = $uEmail;
+        }
+
+
+        /**
+         * @param string $passHash
+         * @return bool
+         */
+        public function comparePassHash(string $passHash): bool {
+            return $this->uPassHash == $passHash;
+        }
+
+        /**
+         * Specify data which should be serialized to JSON
+         *
+         * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+         * @return mixed data which can be serialized by <b>json_encode</b>,
+         *        which is a value of any type other than a resource.
+         * @since 5.4.0
+         */
+        function jsonSerialize() {
+            return [
+                "uID" => $this->uID,
+                "username" => $this->uName,
+                "realname" => $this->uRealname,
+                "email" => $this->uEmail
+            ];
         }
     }

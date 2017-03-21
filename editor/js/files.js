@@ -1,25 +1,25 @@
 /**
- * Created by yanni on 2017-03-19.
+ * Created by yanni on 2017-03-20.
  */
 
 let sortName = "#sort";
-let listName = "#entries"
-let linkList = "../api/calendar/getList.php";
-let jsonField = "entries"
+let listName = "#files"
+let linkList = "../api/files/getList.php";
+let jsonField = "files"
 let pagesize = 12;
 ///////////////////////////////////////////////////////////////////////
 // TODO Fill List Template and update() method
 let listElemTmplt = `
     <tr id="row-{{i}}" style="display: none;">
         <td>{{id}}</td>
-        <td><b>{{name}}</b> ({{{dateParsed}}})<br/>erstellt von {{authorReal}}</td>
-        <td>Version {{version}} <i class="{{{stateCSS}}}"></i> <span class="{{{color}}}">{{stateText}}</span><br/>von {{lastEditAuthor}} - {{lastEdit}}</td>
+        <td><b>{{fileName}}</b><br/>{{filePath}}</td>
+        <td>Hochgeladen von {{author}} <br/>am {{uploaded}}</td>
         <td>
-        <a id="del{{id}}" onclick="del({{{id}}})" href="#!" style="padding-left:10px;padding-right:10px;" class="btn-flat right red-text tooltipped anim" data-position="top" data-delay="50" data-tooltip="Löschen"><i class="mddi mddi-delete"></i></a>
-        <a id="denydel{{id}}" onclick="denydelete({{{id}}})" href="#!" style="padding-left:10px;padding-right:10px;display:none;" class="btn-flat right red-text tooltipped anim"><i class="mddi mddi-close"></i></a>
-        <a id="confdel{{id}}" onclick="confdelete({{{id}}})" href="#!" style="padding-left:10px;padding-right:10px;display:none;" class="btn-flat right green-text tooltipped anim"><i class="mddi mddi-check"></i></a>
-        <a onclick="history({{id}})" href="#!" style="padding-left:10px;padding-right:10px;" class="btn-flat right tooltipped anim" data-position="top" data-delay="50" data-tooltip="Versionsverlauf"><i class="mddi mddi-history"></i></a>
-        <a href="calendar.php?edit={{vId}}" style="padding-left:10px;padding-right:10px;" class="btn-flat right tooltipped anim" data-position="top" data-delay="50" data-tooltip="Bearbeiten"><i class="mddi mddi-pencil"></i></a>
+        <a id="del{{id}}" onclick="del({{id}})" href="#!" style="padding-left:10px;padding-right:10px;" class="btn-flat right red-text tooltipped anim" data-position="top" data-delay="50" data-tooltip="Löschen"><i class="mddi mddi-delete"></i></a>
+        <a id="denydel{{id}}" onclick="denydelete({{id}})" href="#!" style="padding-left:10px;padding-right:10px;display:none;" class="btn-flat right red-text tooltipped anim"><i class="mddi mddi-close"></i></a>
+        <a id="confdel{{id}}" onclick="confdelete({{id}})" href="#!" style="padding-left:10px;padding-right:10px;display:none;" class="btn-flat right green-text tooltipped anim"><i class="mddi mddi-check"></i></a>
+        <a href="../{{filePath}}" target="_blank" style="padding-left:10px;padding-right:10px;" class="btn-flat right tooltipped anim" data-position="top" data-delay="50" data-tooltip="Öffnen"><i class="mddi mddi-open-in-new"></i></a>
+        <a href="files.php?edit={{id}}" style="padding-left:10px;padding-right:10px;" class="btn-flat right tooltipped anim" data-position="top" data-delay="50" data-tooltip="Bearbeiten"><i class="mddi mddi-pencil"></i></a>
         </td>
     </tr>
     `;
@@ -34,6 +34,7 @@ let size = 0;
 let sort = "ascID";
 var data = "";
 let currEdit = -1;
+let files;
 ///////////////////////////////////////////////////////////////////////
 
 function setPage(apage) {
@@ -87,13 +88,10 @@ function updateData() {
             for(let i = 0; i < list.length; i++) {
                 let e = list[i];
                 e.i = i;
-                e.color = e.stateCSS.split(" ")[0];
-                if(e.dateUntil != null)
-                    e.dateParsed = e.date+" - "+e.dateUntil;
-                else e.dateParsed = e.date
                 $(listName).append(template(e));
                 size = i;
             }
+
             animate(0);
         }
     });
@@ -115,35 +113,41 @@ function updateCaller() {
 
 ///////////////////////////////////////
 function backToList() {
-    $("#newEntryForm").fadeOut(200, function() {
-        $("#entryList").fadeIn(200);
+    $("#newFileForm").fadeOut(200, function() {
+        $("#filesList").fadeIn(200);
     });
     currEdit = -1;
 }
 
-function newEntry() {
-    $("#new-name").val("");
-    $("#new-date").val("");
-    $("#new-dateUntil").val("");
-    $("#entryList").fadeOut(200, function() {
-        $("#newEntryForm").fadeIn(200);
-    });
+function newFile() {
+    resetFormElement($("#new-name"));
+    resetFormElement($("input[type=file]"));
+    $("input[type=file]").on("change", (event) => files = event.target.files)
+    $("#filesList").fadeOut(200, () => $("#newFileForm").fadeIn(200));
 }
 
-function submitNewEntry() {
-    let data = {
-        name: $("#new-name").val(),
-        date: $("#new-date").val(),
-        dateUntil: $("#new-dateUntil").val()=="" ? null : $("#new-dateUntil").val()
-    };
-    $.post("../api/calendar/create.php", data, function(response) {
-        let json = JSON.parse(response);
-        if(json.success == true) {
-            Materialize.toast("Eintrag erstellt", 1000, "green");
-            backToList();
-        } else {
-            Materialize.toast("Es ist ein Fehler aufgetreten", 2000, "red");
-        }
+function submitNewFile() {
+    let data = new FormData();
+    $.each(files, function(key, value) {
+        data.append(key, value);
+    });
+
+    data.append("name", $("#new-name").val());
+    $.ajax({
+        url: '../api/files/upload.php',
+        type: 'POST',
+        data: data,
+        cache: false,
+        dataType: 'json',
+        processData: false, // Don't process the files
+        contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+        success: function(data, textStatus, jqXHR) {
+            if(typeof data.error === 'undefined') {
+                Materialize.toast("Datei hochgeladen", 1000, "green");
+                backToList();
+            } else Materialize.toast("Es ist ein Fehler aufgetreten?<br>"+data.error, 2000, "red");
+        },
+        error: (jqXHR, textStatus, errorThrown) => Materialize.toast("Es ist ein Fehler aufgetreten<br>"+textStatus, 2000, "red")
     });
 }
 
@@ -158,11 +162,11 @@ function confdelete(id) {
     $("#confdel"+id).hide();
     $("#denydel"+id).hide();
     let data = {
-        cID: id
+        fID: id
     };
-    $.getJSON("../api/calendar/delete.php", data, function(json) {
+    $.getJSON("../api/files/delete.php", data, function(json) {
         if(json.success == true) {
-            Materialize.toast("Eintrag gelöscht", 1000, "green");
+            Materialize.toast("Artikel gelöscht", 1000, "green");
         } else {
             Materialize.toast("Es ist ein Fehler aufgetreten", 2000, "red");
         }
@@ -177,6 +181,11 @@ function denydelete(id) {
     $("#denydel"+id).hide();
 }
 ///////////////////////////////////////
+function resetFormElement(e) {
+    e.wrap('<form>').closest('form').get(0).reset();
+    e.unwrap();
+    Materialize.updateTextFields();
+}
 
 var delay = (function(){
     let timer = 0;
@@ -196,13 +205,5 @@ $(document).ready(function() {
             updateData();
             updatePages();
         }, 500 );
-    });
-
-    $(".datetimepicker").bootstrapMaterialDatePicker({
-        format: 'YYYY-MM-DDTHH:mm:00',
-        lang: 'de',
-        weekStart: 1,
-        cancelText: 'ABBRECHEN',
-        switchOnClick: true,
     });
 });

@@ -2,7 +2,7 @@
  * Created by yanni on 2017-03-11.
  */
 
-let sortName = "#sortCurr";
+let sortName = "#sort";
 let listName = "#articles"
 let linkList = "../api/articles/getList.php";
 let jsonField = "articles"

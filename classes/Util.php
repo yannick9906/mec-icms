@@ -25,11 +25,11 @@
                 if($_GET["m"] == "debug") {
                     echo "<pre style='display: block; position: absolute'>\n";
                     echo "[0] Perm Array Information:\n";
-                    echo "Not available on this platform";
+                    echo "Not available on this platform\n";
                     echo "\n[1] Permission Information:\n";
-                    echo "Not available on this platform";
+                    echo "Not available on this platform\n";
                     echo "\n[2] User Information:\n";
-                    echo $user->toString();
+                    echo $user;
                     echo "\n[3] Client Information:\n";
                     echo "    Arguments: ".$_SERVER["REQUEST_URI"]."\n";
                     echo "    Req Time : ".$_SERVER["REQUEST_TIME"]."ns\n";

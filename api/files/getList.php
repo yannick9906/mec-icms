@@ -2,8 +2,8 @@
     /**
      * Created by PhpStorm.
      * User: yanni
-     * Date: 04.10.2016
-     * Time: 22:05
+     * Date: 2017-03-19
+     * Time: 04:08 PM
      */
 
     ini_set("display_errors", "on");
@@ -13,12 +13,10 @@
     require_once '../../classes/User.php';
     require_once '../../classes/Permissions.php';
     require_once '../../classes/Util.php';
+    require_once '../../classes/File.php';
 
     $user = \ICMS\Util::checkSession();
     $pdo = new \ICMS\PDO_MYSQL();
 
-    $user = \ICMS\User::fromUID(intval($_GET["id"]));
-    if($user != null)
-        echo json_encode($user);
-    else
-        echo json_encode(["error" => "ID unknown"]);
+    $files = \ICMS\File::getList($_GET["page"], intval($_GET["pagesize"]), utf8_decode($_GET["search"]), $_GET["sort"]);
+    echo json_encode($files);

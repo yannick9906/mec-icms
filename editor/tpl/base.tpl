@@ -62,7 +62,7 @@
                 <li id="nav-calendar"><a href="calendar.php"><i class="mddi mddi-calendar"></i>Termine</a></li>
                 <li><div class="divider"></div></li>
                 <li><a class="subheader indigo-text bolden">Dateien</a></li>
-                <li id="nav-files"><a href="#!"><i class="mddi mddi-file-tree"></i>Dateien</a></li>
+                <li id="nav-files"><a href="files.php"><i class="mddi mddi-file-tree"></i>Dateien</a></li>
                 <li id="nav-download"><a href="#!"><i class="mddi mddi-download"></i>Downloads</a></li>
                 <li id="nav-pictures"><a href="#!"><i class="mddi mddi-file-image"></i>Bilder</a></li>
                 <li><div class="divider"></div></li>
