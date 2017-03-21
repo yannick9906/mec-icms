@@ -17,8 +17,8 @@
     $user = \ICMS\Util::checkSession();
     $pdo = new \ICMS\PDO_MYSQL();
 
-    $user = \ICMS\User::fromUID(intval($_GET["id"]));
-    if($user != null)
-        echo json_encode($user);
+    $userToEdit = \ICMS\User::fromUID(intval($_GET["id"]));
+    if($userToEdit->getUID() != null)
+        echo json_encode($userToEdit);
     else
         echo json_encode(["error" => "ID unknown"]);

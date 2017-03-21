@@ -17,15 +17,15 @@
     $user = \ICMS\Util::checkSession();
     $pdo = new \ICMS\PDO_MYSQL();
 
-    $user = \ICMS\User::fromUID(intval($_GET["id"]));
+    $userToEdit = \ICMS\User::fromUID(intval($_GET["id"]));
     $realname = $_POST["realname"];
     $passhash = $_POST["passhash"];
     $email = $_POST["email"];
 
     if($realname != "" && $passhash != "" && $email) {
-        $user->setUEmail($email);
-        if($passhash != "NOUPDATE") $user->setUPassHash($passhash);
-        $user->setURealname($realname);
-        $user->saveChanges();
+        $userToEdit->setUEmail($email);
+        if($passhash != "NOUPDATE") $userToEdit->setUPassHash($passhash);
+        $userToEdit->setURealname($realname);
+        $userToEdit->saveChanges();
         echo json_encode(["success" => "1"]);
     } else echo json_encode(["success" => "0", "error" => "missing fields"]);
