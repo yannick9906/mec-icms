@@ -70,11 +70,18 @@ function updatePages() {
 
 function updateData() {
     let sort = $(sortName).val();
+    let filter = " ";
+    let search = searchString;
+    if(searchString.startsWith("filter:")) {
+        filter = searchString.replace("filter:","");
+        search = "";
+    }
     let postdata = {
         page: reqPage,
         sort: sort,
-        search: searchString,
-        pagesize: pagesize
+        search: search,
+        pagesize: pagesize,
+        filter: filter
     }
     $.getJSON(linkList,postdata, function(json) {
         maxPages = json['maxPage'];

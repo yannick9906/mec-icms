@@ -51,10 +51,10 @@
          * @param int    $pagesize
          * @param string $search
          * @param string $sort
-         *
+         * @param string $filter
          * @return array Normal dict array with data
          */
-        public static function getList(int $page = 1, int $pagesize = 75, string $search = "", string $sort = ""): array {
+        public static function getList(int $page = 1, int $pagesize = 75, string $search = "", string $sort = "", string $filter): array {
             $USORTING = [
                 "nameAsc"  => "ORDER BY fileName ASC",
                 "idAsc"    => "ORDER BY fID ASC",
@@ -62,11 +62,17 @@
                 "idDesc"   => "ORDER BY fID DESC",
                 "" => ""
             ];
+            $FILTER = [
+                "img" => "and filePath REGEXP '(?i).(jpe?g|png|gif|bmp)$'",
+                "pdf" => "and filePath REGEXP '(?i).(pdf|doc|docx)$'",
+                " " => "",
+                "" => ""
+            ];
 
             $pdo = new PDO_MYSQL();
             $startElem = ($page-1) * $pagesize;
             $endElem = $pagesize;
-            $stmt = $pdo->queryPagedList("icms_files", $startElem, $endElem, ["fileName","dateUploaded"], $search, $USORTING[$sort], "fID >= 0");
+            $stmt = $pdo->queryPagedList("icms_files", $startElem, $endElem, ["fileName","dateUploaded"], $search, $USORTING[$sort], "fID >= 0 ".$FILTER[$filter]);
             $hits = self::getListMeta($page, $pagesize, $search);
             while($row = $stmt->fetchObject()) {
                 $filePath = utf8_decode($row->filePath);

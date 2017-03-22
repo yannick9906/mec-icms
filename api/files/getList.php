@@ -18,5 +18,5 @@
     $user = \ICMS\Util::checkSession();
     $pdo = new \ICMS\PDO_MYSQL();
 
-    $files = \ICMS\File::getList($_GET["page"], intval($_GET["pagesize"]), utf8_decode($_GET["search"]), $_GET["sort"]);
+    $files = \ICMS\File::getList($_GET["page"], intval($_GET["pagesize"]), utf8_decode($_GET["search"]), $_GET["sort"], isset($_GET["filter"]) ? $_GET["filter"] : " ");
     echo json_encode($files);
