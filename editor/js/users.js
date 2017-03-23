@@ -24,7 +24,7 @@ let currPage = 1;
 let reqPage = 1;
 let maxPages = 1;
 let size = 0;
-let sort = "ascID";
+let sort = "idAsc";
 let data = "";
 let currEdit = -1;
 ///////////////////////////////////////////////////////////////////////
