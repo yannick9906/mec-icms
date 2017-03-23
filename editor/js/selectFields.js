@@ -20,12 +20,13 @@ function fillArticleSelect(selector) {
     });
 }
 
-function fillFileSelect(selector) {
+function fillFileSelect(selector, filter = "") {
     let data = {
         search: null,
         page: 1,
         pagesize: 9999,
-        sort: "dateDesc"
+        sort: "dateDesc",
+        filter: filter
     }
     $.getJSON("../api/files/getList.php",data, (json) => {
         let selectItems = "<option value='' disabled selected>Wähle eine Datei</option>";

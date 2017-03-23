@@ -311,6 +311,25 @@
                 "vID = :vid",[":vid" => $this->vID]);
         }
 
+        public function getPictureDetails() {
+            $stmt = $this->pdo->queryMulti("SELECT fID FROM icms_pictures WHERE aID = :aid",[":aid" => $this->aID]);
+            $hits = ["name" => $this->name, "fIDs" => []];
+            while($row = $stmt->fetchObject()) {
+                array_push($hits["fIDs"], $row->fID);
+            }
+            return $hits;
+        }
+
+        public function setPictures($fIDs) {
+            $this->pdo->query("delete from icms_pictures where aID = :aid", [":aid" => $this->aID]);
+            foreach ($fIDs as $fID)
+                $this->pdo->queryInsert("icms_pictures",
+                    [
+                        "aID" => $this->aID,
+                        "fID" => intval($fID)
+                    ]);
+        }
+
         /**
          * @return string
          */
